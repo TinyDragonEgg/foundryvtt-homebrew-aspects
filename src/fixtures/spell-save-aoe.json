@@ -1,0 +1,102 @@
+{
+  "_FIXTURE_NOTES": "Pattern: utility launcher + save rider with AoE target. save.dc.calculation='spellcasting' — never hardcode a number on standalone spells. The AoE is defined in the save activity's target.template, not the spell-level target.",
+  "_id": "ssaexample000001",
+  "name": "Fixture — Save AoE Spell",
+  "type": "spell",
+  "img": "icons/magic/fire/explosion-embers-orange.webp",
+  "system": {
+    "description": { "value": "<p>A save-or-suck AoE spell fixture.</p>", "chat": "" },
+    "source": { "book": "Fixtures", "page": "", "license": "" },
+    "identifier": "fixture-save-aoe-spell",
+    "activation": { "type": "action", "value": 1, "condition": "" },
+    "duration": { "value": "", "units": "inst", "special": "" },
+    "target": {
+      "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+      "affects": { "count": "", "type": "creature", "choice": false, "special": "" },
+      "prompt": true
+    },
+    "range": { "value": null, "units": "self", "special": "" },
+    "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+    "level": 3,
+    "school": "evo",
+    "properties": ["vocal", "somatic"],
+    "materials": { "value": "", "consumed": false, "cost": 0, "supply": 0 },
+    "preparation": { "mode": "prepared", "prepared": false },
+    "scaling": { "mode": "whole", "formula": "1d8" },
+    "activities": {
+      "ssaexlaunch00001": {
+        "_id": "ssaexlaunch00001",
+        "type": "utility",
+        "name": "Fixture — Save AoE Spell",
+        "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
+        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": false },
+        "description": { "chatFlavor": "" },
+        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "effects": [],
+        "range": { "value": null, "units": "", "special": "", "override": false },
+        "target": {
+          "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+          "affects": { "count": "", "type": "creature", "choice": false, "special": "" },
+          "prompt": true,
+          "override": false
+        },
+        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+        "visibility": { "override": false, "replacementAbility": "" },
+        "sort": 0
+      },
+      "ssaexsave0000001": {
+        "_id": "ssaexsave0000001",
+        "type": "save",
+        "name": "Fixture — Save AoE Spell — Save",
+        "activation": { "type": "special", "value": null, "override": true, "condition": "" },
+        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": false },
+        "damage": {
+          "onSave": "half",
+          "includeBase": false,
+          "parts": [
+            {
+              "base": true,
+              "bonus": "",
+              "custom": { "enabled": false, "formula": "" },
+              "denomination": 8,
+              "number": 8,
+              "scaling": { "mode": "whole", "number": null },
+              "types": ["fire"]
+            }
+          ]
+        },
+        "description": { "chatFlavor": "" },
+        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "effects": [],
+        "range": { "value": null, "units": "self", "special": "", "override": true },
+        "save": {
+          "ability": ["dex"],
+          "dc": { "formula": "", "calculation": "spellcasting" }
+        },
+        "target": {
+          "template": { "count": "1", "contiguous": false, "type": "radius", "size": "20", "width": "", "height": "", "units": "ft" },
+          "affects": { "count": "", "type": "creature", "choice": false, "special": "" },
+          "prompt": true,
+          "override": true
+        },
+        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+        "visibility": { "override": false, "replacementAbility": "" },
+        "sort": 10
+      }
+    }
+  },
+  "flags": {
+    "dnd5e": {
+      "riders": { "activity": ["ssaexsave0000001"] }
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": { "default": 0 },
+  "_stats": {
+    "compendiumSource": null, "duplicateSource": null,
+    "coreVersion": "13.351", "systemVersion": "5.3.0",
+    "createdTime": null, "modifiedTime": null, "lastModifiedBy": null
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "_FIXTURE_NOTES": "AI format input example for a consumable. itemCategory='consumable', consumableType='potion'. The importer maps these to the correct dnd5e type fields automatically.",
+  "_aiFormat": true,
+  "name": "Example Elixir of Arcane Sight",
+  "itemCategory": "consumable",
+  "consumableType": "potion",
+  "rarity": "rare",
+  "attunement": null,
+  "charges": { "max": 1, "recovery": null },
+  "imageHints": ["potion", "arcane", "blue", "eye"],
+  "description": "<p>A shimmering blue elixir. For 1 hour after drinking, you can see invisible creatures and objects.</p>",
+  "activities": [
+    {
+      "name": "Drink",
+      "type": "utility",
+      "chargesCost": 1
+    }
+  ]
+}

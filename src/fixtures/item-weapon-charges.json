@@ -1,0 +1,157 @@
+{
+  "_FIXTURE_NOTES": "Pattern: magical weapon with charge-consuming activities. Key rules: (1) spellSlot must be false on all item activities, (2) consumption.targets use type='itemUses' with a numeric string value, (3) magicalBonus applies to weapon attack/damage, (4) spell attack bonus is a separate ActiveEffect. The dnd5eactivity000 ID is RESERVED for the primary weapon attack — never reuse it for custom activities.",
+  "_id": "iwcexample000001",
+  "name": "Fixture — Weapon With Charges",
+  "type": "weapon",
+  "img": "icons/weapons/staves/staff-ornate-orange.webp",
+  "system": {
+    "description": { "value": "<p>A magical weapon with charge-based abilities.</p>", "chat": "" },
+    "source": { "book": "Fixtures", "page": "", "license": "" },
+    "identifier": "fixture-weapon-with-charges",
+    "quantity": 1,
+    "weight": { "value": 4, "units": "lb" },
+    "price": { "value": 0, "denomination": "gp" },
+    "attunement": "required",
+    "equipped": false,
+    "rarity": "rare",
+    "identified": true,
+    "activation": { "type": "action", "value": 1, "condition": "" },
+    "duration": { "value": "", "units": "", "special": "" },
+    "target": {
+      "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+      "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+      "prompt": true
+    },
+    "range": { "value": 5, "units": "ft", "special": "" },
+    "uses": {
+      "value": 10,
+      "max": "10",
+      "recovery": [{ "period": "lr", "type": "recoverAll", "formula": "" }],
+      "spent": 0
+    },
+    "damage": {
+      "base": {
+        "custom": { "enabled": false, "formula": "" },
+        "number": 1, "denomination": 6, "bonus": "",
+        "types": ["bludgeoning"],
+        "scaling": { "mode": "whole", "number": 1 }
+      }
+    },
+    "critical": { "threshold": null, "damage": "" },
+    "type": { "value": "simpleM", "subtype": "" },
+    "properties": [],
+    "proficiencyMultiplier": 1,
+    "magicalBonus": 1,
+    "enchantment": null,
+    "activities": {
+      "iwcexattack00001": {
+        "_id": "iwcexattack00001",
+        "type": "attack",
+        "name": "Surge Strike",
+        "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
+        "attack": {
+          "ability": "",
+          "bonus": "",
+          "critical": { "threshold": null, "damage": "" },
+          "flat": false,
+          "type": { "value": "ranged", "classification": "spell" }
+        },
+        "consumption": {
+          "targets": [{ "type": "itemUses", "value": "1", "target": "" }],
+          "scaling": { "allowed": false, "max": "" },
+          "spellSlot": false
+        },
+        "damage": {
+          "includeBase": false,
+          "parts": [
+            {
+              "base": true, "bonus": "",
+              "custom": { "enabled": false, "formula": "" },
+              "denomination": 10, "number": 1,
+              "scaling": { "mode": "whole", "number": null },
+              "types": ["force"]
+            }
+          ]
+        },
+        "description": { "chatFlavor": "" },
+        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "effects": [],
+        "range": { "value": 60, "units": "ft", "special": "", "override": false },
+        "target": {
+          "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+          "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+          "prompt": true, "override": false
+        },
+        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+        "visibility": { "override": false, "replacementAbility": "" },
+        "sort": 0
+      },
+      "iwcexsave0000001": {
+        "_id": "iwcexsave0000001",
+        "type": "save",
+        "name": "Overload",
+        "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
+        "consumption": {
+          "targets": [{ "type": "itemUses", "value": "5", "target": "" }],
+          "scaling": { "allowed": false, "max": "" },
+          "spellSlot": false
+        },
+        "damage": {
+          "onSave": "half",
+          "includeBase": false,
+          "parts": [
+            {
+              "base": true, "bonus": "",
+              "custom": { "enabled": false, "formula": "" },
+              "denomination": 6, "number": 6,
+              "scaling": { "mode": "", "number": null },
+              "types": ["force"]
+            }
+          ]
+        },
+        "description": { "chatFlavor": "" },
+        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "effects": [],
+        "range": { "value": null, "units": "self", "special": "", "override": true },
+        "save": {
+          "ability": ["con"],
+          "dc": { "formula": "15", "calculation": "" }
+        },
+        "target": {
+          "template": { "count": "1", "contiguous": false, "type": "radius", "size": "20", "width": "", "height": "", "units": "ft" },
+          "affects": { "count": "", "type": "creature", "choice": false, "special": "" },
+          "prompt": true, "override": true
+        },
+        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+        "visibility": { "override": false, "replacementAbility": "" },
+        "sort": 10
+      }
+    }
+  },
+  "flags": {
+    "dnd5e": {
+      "riders": { "activity": [] }
+    }
+  },
+  "effects": [
+    {
+      "_id": "iwcexspbonus0001",
+      "name": "Spell Attack Bonus +1",
+      "img": "icons/magic/symbols/runes-star-orange.webp",
+      "type": "base",
+      "system": {},
+      "changes": [{ "key": "system.bonuses.spell.attack", "mode": 2, "value": "1", "priority": 20 }],
+      "disabled": false,
+      "duration": { "startTime": null, "seconds": null, "combat": null, "rounds": null, "turns": null, "startRound": null, "startTurn": null },
+      "description": "", "origin": null, "tint": null, "transfer": true, "statuses": [], "flags": {}
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "ownership": { "default": 0 },
+  "_stats": {
+    "compendiumSource": null, "duplicateSource": null,
+    "coreVersion": "13.351", "systemVersion": "5.3.0",
+    "createdTime": null, "modifiedTime": null, "lastModifiedBy": null
+  }
+}

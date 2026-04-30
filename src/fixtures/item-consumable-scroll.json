@@ -1,0 +1,73 @@
+{
+  "_FIXTURE_NOTES": "Pattern: spell scroll consumable. type='consumable', system.type.value='scroll'. Cast activity references a spell by UUID or spell.name hint. If spell.uuid is empty, the importer resolves it from spell.name. After resolving, spell.name is stripped before Item.create().",
+  "_id": "icsexample000001",
+  "name": "Fixture — Spell Scroll",
+  "type": "consumable",
+  "img": "icons/sundries/scrolls/scroll-worn-brown-grey.webp",
+  "system": {
+    "description": { "value": "<p>A spell scroll fixture. Cast the spell, then the scroll is consumed.</p>", "chat": "" },
+    "source": { "book": "Fixtures", "page": "", "license": "" },
+    "identifier": "fixture-spell-scroll",
+    "quantity": 1,
+    "weight": { "value": 0, "units": "lb" },
+    "price": { "value": 100, "denomination": "gp" },
+    "attunement": "",
+    "equipped": false,
+    "rarity": "uncommon",
+    "identified": true,
+    "activation": { "type": "action", "value": 1, "condition": "" },
+    "duration": { "value": "", "units": "inst", "special": "" },
+    "target": {
+      "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+      "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+      "prompt": true
+    },
+    "range": { "value": null, "units": "self", "special": "" },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "recovery": [],
+      "spent": 0,
+      "autoDestroy": true
+    },
+    "type": { "value": "scroll", "subtype": "" },
+    "activities": {
+      "icsexcast0000001": {
+        "_id": "icsexcast0000001",
+        "type": "cast",
+        "name": "Cast Spell",
+        "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
+        "consumption": {
+          "targets": [{ "type": "itemUses", "value": "1", "target": "" }],
+          "scaling": { "allowed": false, "max": "" },
+          "spellSlot": false
+        },
+        "description": { "chatFlavor": "" },
+        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "effects": [],
+        "range": { "value": null, "units": "", "special": "", "override": false },
+        "spell": {
+          "uuid": "",
+          "name": "Fixture — Ranged Attack Spell"
+        },
+        "target": {
+          "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+          "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+          "prompt": true, "override": false
+        },
+        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+        "visibility": { "override": false, "replacementAbility": "" },
+        "sort": 0
+      }
+    }
+  },
+  "flags": { "dnd5e": { "riders": { "activity": [] } } },
+  "effects": [],
+  "folder": null, "sort": 0,
+  "ownership": { "default": 0 },
+  "_stats": {
+    "compendiumSource": null, "duplicateSource": null,
+    "coreVersion": "13.351", "systemVersion": "5.3.0",
+    "createdTime": null, "modifiedTime": null, "lastModifiedBy": null
+  }
+}

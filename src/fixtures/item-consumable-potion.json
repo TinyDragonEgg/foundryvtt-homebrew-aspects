@@ -1,0 +1,77 @@
+{
+  "_FIXTURE_NOTES": "Pattern: consumable potion. type='consumable', system.type.value='potion'. Uses autoDestroy to delete on last use. Heal activity (type='heal') for HP restoration.",
+  "_id": "icpexample000001",
+  "name": "Fixture — Potion",
+  "type": "consumable",
+  "img": "icons/consumables/potions/potion-round-empty-red.webp",
+  "system": {
+    "description": { "value": "<p>A consumable potion fixture.</p>", "chat": "" },
+    "source": { "book": "Fixtures", "page": "", "license": "" },
+    "identifier": "fixture-potion",
+    "quantity": 1,
+    "weight": { "value": 0.5, "units": "lb" },
+    "price": { "value": 50, "denomination": "gp" },
+    "attunement": "",
+    "equipped": false,
+    "rarity": "common",
+    "identified": true,
+    "activation": { "type": "action", "value": 1, "condition": "" },
+    "duration": { "value": "", "units": "inst", "special": "" },
+    "target": {
+      "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+      "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+      "prompt": true
+    },
+    "range": { "value": null, "units": "self", "special": "" },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "recovery": [],
+      "spent": 0,
+      "autoDestroy": true
+    },
+    "type": { "value": "potion", "subtype": "" },
+    "activities": {
+      "icpexheal0000001": {
+        "_id": "icpexheal0000001",
+        "type": "heal",
+        "name": "Drink",
+        "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
+        "consumption": {
+          "targets": [{ "type": "itemUses", "value": "1", "target": "" }],
+          "scaling": { "allowed": false, "max": "" },
+          "spellSlot": false
+        },
+        "description": { "chatFlavor": "" },
+        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "effects": [],
+        "healing": {
+          "custom": { "enabled": false, "formula": "" },
+          "denomination": 4,
+          "number": 2,
+          "bonus": "2",
+          "types": ["healing"],
+          "scaling": { "mode": "", "number": null }
+        },
+        "range": { "value": null, "units": "self", "special": "", "override": false },
+        "target": {
+          "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+          "affects": { "count": "1", "type": "self", "choice": false, "special": "" },
+          "prompt": false, "override": false
+        },
+        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+        "visibility": { "override": false, "replacementAbility": "" },
+        "sort": 0
+      }
+    }
+  },
+  "flags": { "dnd5e": { "riders": { "activity": [] } } },
+  "effects": [],
+  "folder": null, "sort": 0,
+  "ownership": { "default": 0 },
+  "_stats": {
+    "compendiumSource": null, "duplicateSource": null,
+    "coreVersion": "13.351", "systemVersion": "5.3.0",
+    "createdTime": null, "modifiedTime": null, "lastModifiedBy": null
+  }
+}

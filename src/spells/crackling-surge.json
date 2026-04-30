@@ -1,0 +1,101 @@
+{
+  "_id": "csurgeexample001",
+  "name": "Crackling Surge",
+  "type": "spell",
+  "img": "icons/magic/lightning/bolt-forked-blue.webp",
+  "system": {
+    "description": {
+      "value": "<p>You launch a crackling bolt of condensed force energy at a creature within range. Make a ranged spell attack. On a hit, the target takes 1d10 force damage.</p><p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 2nd level or higher, the damage increases by 1d10 for each slot level above 1st.</p>",
+      "chat": ""
+    },
+    "source": { "book": "Aspects of Verun Homebrew", "page": "", "license": "" },
+    "identifier": "crackling-surge",
+    "activation": { "type": "action", "value": 1, "condition": "" },
+    "duration": { "value": "", "units": "inst", "special": "" },
+    "target": {
+      "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+      "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+      "prompt": true
+    },
+    "range": { "value": 120, "units": "ft", "special": "" },
+    "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+    "level": 1,
+    "school": "evo",
+    "properties": ["vocal", "somatic"],
+    "materials": { "value": "", "consumed": false, "cost": 0, "supply": 0 },
+    "preparation": { "mode": "prepared", "prepared": false },
+    "scaling": { "mode": "whole", "formula": "1d10" },
+    "activities": {
+      "csurgelaunch0001": {
+        "_id": "csurgelaunch0001",
+        "type": "utility",
+        "name": "Crackling Surge",
+        "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
+        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": false },
+        "description": { "chatFlavor": "" },
+        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "effects": [],
+        "range": { "value": null, "units": "", "special": "", "override": false },
+        "target": {
+          "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+          "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+          "prompt": true, "override": false
+        },
+        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+        "visibility": { "override": false, "replacementAbility": "" },
+        "sort": 0
+      },
+      "csurgeattack0001": {
+        "_id": "csurgeattack0001",
+        "type": "attack",
+        "name": "Crackling Surge — Attack",
+        "activation": { "type": "special", "value": null, "override": true, "condition": "" },
+        "attack": {
+          "ability": "",
+          "bonus": "",
+          "critical": { "threshold": null, "damage": "" },
+          "flat": false,
+          "type": { "value": "ranged", "classification": "spell" }
+        },
+        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": false },
+        "damage": {
+          "includeBase": false,
+          "parts": [
+            {
+              "base": true, "bonus": "",
+              "custom": { "enabled": false, "formula": "" },
+              "denomination": 10, "number": 1,
+              "scaling": { "mode": "whole", "number": null },
+              "types": ["force"]
+            }
+          ]
+        },
+        "description": { "chatFlavor": "" },
+        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "effects": [],
+        "range": { "value": 120, "units": "ft", "special": "", "override": true },
+        "target": {
+          "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+          "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+          "prompt": true, "override": false
+        },
+        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+        "visibility": { "override": false, "replacementAbility": "" },
+        "sort": 10
+      }
+    }
+  },
+  "flags": {
+    "dnd5e": {
+      "riders": { "activity": ["csurgeattack0001"] }
+    }
+  },
+  "effects": [],
+  "folder": null, "sort": 0,
+  "ownership": { "default": 0 },
+  "_stats": {
+    "compendiumSource": null, "duplicateSource": null,
+    "coreVersion": "13.351", "systemVersion": "5.3.0",
+    "createdTime": null, "modifiedTime": null, "lastModifiedBy": null
+  }
+}

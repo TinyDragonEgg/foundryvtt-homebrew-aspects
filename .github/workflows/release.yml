@@ -1,0 +1,79 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run validation & tests
+        run: |
+          npm run validate
+          npm test
+
+      - name: Build compendium packs
+        run: npm run build
+
+      - name: Derive version and download URL
+        id: vars
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          MODULE_ZIP="aspects-of-verun-homebrew.zip"
+          DOWNLOAD_URL="https://github.com/${{ github.repository }}/releases/download/${GITHUB_REF_NAME}/${MODULE_ZIP}"
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "zip=${MODULE_ZIP}" >> $GITHUB_OUTPUT
+          echo "download_url=${DOWNLOAD_URL}" >> $GITHUB_OUTPUT
+
+      - name: Patch module.json with version and download URL
+        run: |
+          sed -i "s/\"version\": \"0\.0\.0\"/\"version\": \"${{ steps.vars.outputs.version }}\"/" module.json
+          sed -i "s|\"download\": \"\"|\"download\": \"${{ steps.vars.outputs.download_url }}\"|" module.json
+
+      - name: Create release zip
+        run: |
+          zip -r "${{ steps.vars.outputs.zip }}" . \
+            --exclude "src/*" \
+            --exclude "scripts/*" \
+            --exclude ".github/*" \
+            --exclude "node_modules/*" \
+            --exclude ".git/*" \
+            --exclude ".fvttrc" \
+            --exclude ".fvttrc.example" \
+            --exclude "*.zip" \
+            --exclude "package-lock.json"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "v${{ steps.vars.outputs.version }}"
+          body: |
+            ## Aspects of Verun — Homebrew v${{ steps.vars.outputs.version }}
+
+            Install via manifest URL:
+            ```
+            https://github.com/${{ github.repository }}/releases/latest/download/module.json
+            ```
+          files: |
+            ${{ steps.vars.outputs.zip }}
+            module.json
+          draft: false
+          prerelease: false

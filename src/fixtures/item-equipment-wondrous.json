@@ -1,0 +1,69 @@
+{
+  "_FIXTURE_NOTES": "Pattern: wondrous item (equipment type). No weapon fields. Activities still use spellSlot: false and itemUses consumption. Rarity 'veryRare'. Attunement 'required'.",
+  "_id": "iewexample000001",
+  "name": "Fixture — Wondrous Item",
+  "type": "equipment",
+  "img": "icons/equipment/neck/amulet-gold-triquetra.webp",
+  "system": {
+    "description": { "value": "<p>A wondrous equipment item fixture.</p>", "chat": "" },
+    "source": { "book": "Fixtures", "page": "", "license": "" },
+    "identifier": "fixture-wondrous-item",
+    "quantity": 1,
+    "weight": { "value": 0.5, "units": "lb" },
+    "price": { "value": 0, "denomination": "gp" },
+    "attunement": "required",
+    "equipped": false,
+    "rarity": "veryRare",
+    "identified": true,
+    "activation": { "type": "action", "value": 1, "condition": "" },
+    "duration": { "value": "", "units": "", "special": "" },
+    "target": {
+      "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+      "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+      "prompt": true
+    },
+    "range": { "value": null, "units": "self", "special": "" },
+    "uses": {
+      "value": 3,
+      "max": "3",
+      "recovery": [{ "period": "lr", "type": "recoverAll", "formula": "" }],
+      "spent": 0
+    },
+    "type": { "value": "trinket", "subtype": "" },
+    "armor": { "value": 0, "dex": null, "magicalBonus": null },
+    "activities": {
+      "iewexutility0001": {
+        "_id": "iewexutility0001",
+        "type": "utility",
+        "name": "Activate",
+        "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
+        "consumption": {
+          "targets": [{ "type": "itemUses", "value": "1", "target": "" }],
+          "scaling": { "allowed": false, "max": "" },
+          "spellSlot": false
+        },
+        "description": { "chatFlavor": "" },
+        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "effects": [],
+        "range": { "value": null, "units": "", "special": "", "override": false },
+        "target": {
+          "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+          "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+          "prompt": true, "override": false
+        },
+        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+        "visibility": { "override": false, "replacementAbility": "" },
+        "sort": 0
+      }
+    }
+  },
+  "flags": { "dnd5e": { "riders": { "activity": [] } } },
+  "effects": [],
+  "folder": null, "sort": 0,
+  "ownership": { "default": 0 },
+  "_stats": {
+    "compendiumSource": null, "duplicateSource": null,
+    "coreVersion": "13.351", "systemVersion": "5.3.0",
+    "createdTime": null, "modifiedTime": null, "lastModifiedBy": null
+  }
+}

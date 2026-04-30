@@ -1,0 +1,402 @@
+/* Aspects of Verun — Importer styles
+   All selectors scoped to .aov-importer-window or .aov-export-* / .aov-importer-*
+   Uses dnd5e CSS custom properties where available. */
+
+/* ── Window chrome ─────────────────────────────────────────────────────────── */
+
+.aov-importer-window {
+  font-family: var(--font-primary, sans-serif);
+  font-size: 13px;
+  color: var(--color-text-primary, #191813);
+}
+
+.aov-importer-window .window-content {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Layout ─────────────────────────────────────────────────────────────────── */
+
+.aov-importer-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.aov-importer-panel {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Tabs ───────────────────────────────────────────────────────────────────── */
+
+.aov-importer-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--color-border-dark, #7a7971);
+  background: var(--color-bg-option, #f0ece3);
+  flex-shrink: 0;
+}
+
+.aov-importer-tab {
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  padding: 7px 14px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary, #6b6860);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.aov-importer-tab:hover {
+  color: var(--color-text-primary, #191813);
+}
+
+.aov-importer-tab.active {
+  color: var(--dnd5e-color-gold, #4b0082);
+  border-bottom-color: var(--dnd5e-color-gold, #4b0082);
+}
+
+.aov-importer-badge {
+  background: var(--dnd5e-color-gold, #4b0082);
+  color: #fff;
+  border-radius: 8px;
+  padding: 1px 5px;
+  font-size: 10px;
+}
+
+/* ── Toolbar / row layouts ───────────────────────────────────────────────────── */
+
+.aov-importer-toolbar,
+.aov-importer-parse-row,
+.aov-importer-import-row,
+.aov-importer-log-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.aov-importer-label {
+  color: var(--color-text-secondary, #6b6860);
+  font-size: 12px;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────────── */
+
+.aov-importer-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border: 1px solid var(--color-border-dark, #7a7971);
+  border-radius: 3px;
+  background: var(--color-bg-btn, #f0ece3);
+  color: var(--color-text-primary, #191813);
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.1s;
+}
+
+.aov-importer-btn:hover {
+  background: var(--color-bg-btn-hover, #e0ddd5);
+}
+
+.aov-btn-primary {
+  background: var(--dnd5e-color-gold, #4b0082);
+  color: #fff;
+  border-color: var(--dnd5e-color-gold, #4b0082);
+}
+
+.aov-btn-primary:hover {
+  background: #3a006b;
+}
+
+.aov-btn-import {
+  background: #1a5c2a;
+  color: #fff;
+  border-color: #1a5c2a;
+  font-size: 13px;
+  padding: 6px 14px;
+  margin-left: auto;
+}
+
+.aov-btn-import:hover {
+  background: #144820;
+}
+
+.aov-btn-disabled,
+.aov-btn-disabled:hover {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #888;
+  border-color: #888;
+}
+
+.aov-btn-sm {
+  padding: 3px 8px;
+  font-size: 11px;
+}
+
+/* ── Textarea ────────────────────────────────────────────────────────────────── */
+
+.aov-importer-json-input {
+  width: 100%;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  line-height: 1.45;
+  border: 1px solid var(--color-border-dark, #7a7971);
+  border-radius: 3px;
+  padding: 6px 8px;
+  resize: vertical;
+  background: #fafaf8;
+  color: #191813;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+/* ── Status indicators ────────────────────────────────────────────────────────── */
+
+.aov-importer-status {
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.aov-status-ok { color: #1a5c2a; }
+.aov-status-error { color: #8b1a1a; }
+
+/* ── Error list ───────────────────────────────────────────────────────────────── */
+
+.aov-importer-error-list {
+  margin: 0;
+  padding: 6px 10px;
+  background: #fff0f0;
+  border: 1px solid #e08080;
+  border-radius: 3px;
+  font-size: 11px;
+  color: #8b1a1a;
+  list-style: none;
+  max-height: 80px;
+  overflow-y: auto;
+}
+
+.aov-importer-error-list li {
+  padding: 1px 0;
+}
+
+/* ── Preview ─────────────────────────────────────────────────────────────────── */
+
+.aov-importer-preview {
+  border: 1px solid var(--color-border-dark, #7a7971);
+  border-radius: 3px;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.aov-importer-preview summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 2px 0;
+}
+
+.aov-importer-preview-list {
+  margin: 4px 0 0;
+  padding: 0 0 0 10px;
+  list-style: none;
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+.aov-importer-preview-list li {
+  padding: 2px 0;
+  border-bottom: 1px solid #e0ddd5;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.aov-importer-meta {
+  color: var(--color-text-secondary, #6b6860);
+  font-size: 11px;
+}
+
+.aov-importer-tag {
+  font-size: 10px;
+  background: #4b0082;
+  color: #fff;
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
+/* ── Overwrite checkbox ────────────────────────────────────────────────────────── */
+
+.aov-importer-check-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* ── Progress bar ───────────────────────────────────────────────────────────────── */
+
+.aov-importer-progress-bar {
+  height: 6px;
+  background: #e0ddd5;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.aov-importer-progress-fill {
+  height: 100%;
+  background: #1a5c2a;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* ── Log output ────────────────────────────────────────────────────────────────── */
+
+.aov-importer-log-output {
+  flex: 1;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: #1a1a1a;
+  color: #d4d0c8;
+  border-radius: 3px;
+  padding: 8px 10px;
+  margin: 0;
+  overflow-y: auto;
+  min-height: 200px;
+}
+
+/* ── Settings panel ──────────────────────────────────────────────────────────── */
+
+.aov-importer-settings-panel {
+  gap: 12px;
+}
+
+.aov-importer-settings-hint {
+  font-size: 12px;
+  color: var(--color-text-secondary, #6b6860);
+  margin: 0;
+}
+
+.aov-importer-settings-list {
+  margin: 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 4px 12px;
+  font-size: 12px;
+}
+
+.aov-importer-settings-list dt {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.aov-importer-settings-list dd {
+  margin: 0;
+  color: var(--color-text-secondary, #6b6860);
+}
+
+/* ── Sheet export button ──────────────────────────────────────────────────────── */
+
+.aov-export-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-secondary, #6b6860);
+  font-size: 13px;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.aov-export-btn:hover {
+  color: var(--dnd5e-color-gold, #4b0082);
+}
+
+/* ── Export dialog ────────────────────────────────────────────────────────────── */
+
+.aov-export-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.aov-export-tabs {
+  display: flex;
+  gap: 6px;
+}
+
+.aov-export-tab {
+  padding: 4px 10px;
+  border: 1px solid var(--color-border-dark, #7a7971);
+  border-radius: 3px;
+  background: none;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.aov-export-tab.active {
+  background: var(--dnd5e-color-gold, #4b0082);
+  color: #fff;
+  border-color: var(--dnd5e-color-gold, #4b0082);
+}
+
+.aov-export-textarea {
+  width: 100%;
+  height: 280px;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  line-height: 1.45;
+  border: 1px solid var(--color-border-dark, #7a7971);
+  border-radius: 3px;
+  padding: 6px 8px;
+  resize: vertical;
+  background: #fafaf8;
+  box-sizing: border-box;
+}
+
+.aov-export-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.aov-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border: 1px solid var(--color-border-dark, #7a7971);
+  border-radius: 3px;
+  background: var(--color-bg-btn, #f0ece3);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.aov-export-hint {
+  font-size: 11px;
+  color: var(--color-text-secondary, #6b6860);
+}

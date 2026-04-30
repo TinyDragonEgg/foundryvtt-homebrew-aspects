@@ -1,0 +1,101 @@
+{
+  "_id": "vlanceexample001",
+  "name": "Void Lance",
+  "type": "spell",
+  "img": "icons/magic/unholy/projectiles-shadow-purple.webp",
+  "system": {
+    "description": {
+      "value": "<p>You hurl a lance of consuming void at a creature you can see within range. Make a ranged spell attack. On a hit, the target takes 2d8 necrotic damage and cannot regain hit points until the start of your next turn.</p><p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 2nd level or higher, the damage increases by 1d8 for each slot level above 1st.</p>",
+      "chat": ""
+    },
+    "source": { "book": "Aspects of Verun Homebrew", "page": "", "license": "" },
+    "identifier": "void-lance",
+    "activation": { "type": "action", "value": 1, "condition": "" },
+    "duration": { "value": "", "units": "inst", "special": "" },
+    "target": {
+      "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+      "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+      "prompt": true
+    },
+    "range": { "value": 90, "units": "ft", "special": "" },
+    "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+    "level": 1,
+    "school": "nec",
+    "properties": ["vocal", "somatic"],
+    "materials": { "value": "", "consumed": false, "cost": 0, "supply": 0 },
+    "preparation": { "mode": "prepared", "prepared": false },
+    "scaling": { "mode": "whole", "formula": "1d8" },
+    "activities": {
+      "vlancelaunch0001": {
+        "_id": "vlancelaunch0001",
+        "type": "utility",
+        "name": "Void Lance",
+        "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
+        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": false },
+        "description": { "chatFlavor": "" },
+        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "effects": [],
+        "range": { "value": null, "units": "", "special": "", "override": false },
+        "target": {
+          "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+          "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+          "prompt": true, "override": false
+        },
+        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+        "visibility": { "override": false, "replacementAbility": "" },
+        "sort": 0
+      },
+      "vlanceattack0001": {
+        "_id": "vlanceattack0001",
+        "type": "attack",
+        "name": "Void Lance — Attack",
+        "activation": { "type": "special", "value": null, "override": true, "condition": "" },
+        "attack": {
+          "ability": "",
+          "bonus": "",
+          "critical": { "threshold": null, "damage": "" },
+          "flat": false,
+          "type": { "value": "ranged", "classification": "spell" }
+        },
+        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": false },
+        "damage": {
+          "includeBase": false,
+          "parts": [
+            {
+              "base": true, "bonus": "",
+              "custom": { "enabled": false, "formula": "" },
+              "denomination": 8, "number": 2,
+              "scaling": { "mode": "whole", "number": null },
+              "types": ["necrotic"]
+            }
+          ]
+        },
+        "description": { "chatFlavor": "" },
+        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "effects": [],
+        "range": { "value": 90, "units": "ft", "special": "", "override": true },
+        "target": {
+          "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+          "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+          "prompt": true, "override": false
+        },
+        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+        "visibility": { "override": false, "replacementAbility": "" },
+        "sort": 10
+      }
+    }
+  },
+  "flags": {
+    "dnd5e": {
+      "riders": { "activity": ["vlanceattack0001"] }
+    }
+  },
+  "effects": [],
+  "folder": null, "sort": 0,
+  "ownership": { "default": 0 },
+  "_stats": {
+    "compendiumSource": null, "duplicateSource": null,
+    "coreVersion": "13.351", "systemVersion": "5.3.0",
+    "createdTime": null, "modifiedTime": null, "lastModifiedBy": null
+  }
+}

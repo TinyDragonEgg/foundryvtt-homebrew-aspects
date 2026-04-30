@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "aspects-of-verun-homebrew/ai-item-format",
+  "title": "Aspects of Verun — AI Item Format",
+  "description": "Simplified input format for AI-generated items. The importer converts this to a full Foundry dnd5e document.",
+  "type": "object",
+  "required": ["_aiFormat", "name", "itemCategory"],
+  "properties": {
+    "_aiFormat": { "type": "boolean", "enum": [true] },
+    "name": { "type": "string", "minLength": 1 },
+    "itemCategory": {
+      "type": "string",
+      "enum": ["weapon", "equipment", "consumable", "loot", "tool", "container", "feature"]
+    },
+    "consumableType": {
+      "type": "string",
+      "enum": ["potion", "scroll", "wand", "food", "ammunition", "trinket", "rod"]
+    },
+    "rarity": {
+      "type": "string",
+      "enum": ["common", "uncommon", "rare", "veryRare", "legendary", "artifact"]
+    },
+    "attunement": {
+      "oneOf": [
+        { "type": "string", "description": "Attunement requirement text, e.g. 'sorcerer, warlock, or wizard'" },
+        { "type": "null" }
+      ]
+    },
+    "charges": {
+      "type": "object",
+      "properties": {
+        "max": { "type": "integer", "minimum": 0 },
+        "recovery": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "period": { "type": "string", "enum": ["sr", "lr", "dawn", "dusk", "day"] },
+                "formula": { "type": "string" }
+              },
+              "required": ["period"]
+            },
+            { "type": "null" }
+          ]
+        }
+      },
+      "required": ["max"]
+    },
+    "magicalBonus": { "type": "integer", "minimum": 0, "maximum": 5 },
+    "spellAttackBonus": { "type": "integer", "minimum": 0, "maximum": 10 },
+    "baseWeapon": { "type": "string", "description": "e.g. 'quarterstaff', 'longsword', 'dagger'" },
+    "imageHints": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Keywords to help the fuzzy image matcher"
+    },
+    "description": { "type": "string", "description": "HTML description" },
+    "activities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "type"],
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "type": "string", "enum": ["attack", "save", "utility", "cast", "heal"] },
+          "chargesCost": { "type": "integer", "minimum": 0, "description": "Must be an integer" },
+          "attackType": {
+            "type": "string",
+            "enum": ["ranged spell", "melee spell", "melee weapon"],
+            "description": "Required if type is 'attack'"
+          },
+          "damage": {
+            "type": "string",
+            "pattern": "^\\d+d\\d+$",
+            "description": "Dice notation, e.g. '2d8'"
+          },
+          "damageType": {
+            "type": "string",
+            "enum": [
+              "force", "necrotic", "lightning", "cold", "fire", "radiant",
+              "thunder", "poison", "acid", "psychic", "bludgeoning", "piercing", "slashing"
+            ]
+          },
+          "range": { "type": "integer", "minimum": 0 },
+          "scaling": { "type": "string", "enum": ["whole", "half", "amount", "none"] },
+          "saveAbility": {
+            "type": "string",
+            "enum": ["str", "dex", "con", "int", "wis", "cha"],
+            "description": "Required if type is 'save'"
+          },
+          "saveDC": { "type": "integer", "minimum": 0, "description": "0 or omit to use spellcasting DC" },
+          "onSave": { "type": "string", "enum": ["half", "none"] },
+          "aoeType": { "type": "string", "enum": ["radius", "sphere", "cone", "line", "cube"] },
+          "aoeSize": { "type": "integer", "minimum": 5 },
+          "spellName": {
+            "type": "string",
+            "description": "Required if type is 'cast'. The importer resolves this to a UUID."
+          },
+          "healDice": { "type": "string", "pattern": "^\\d+d\\d+$" },
+          "healBonus": { "type": "string" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

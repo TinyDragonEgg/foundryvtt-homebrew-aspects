@@ -1,0 +1,19 @@
+{
+  "name": "aspects-of-verun-homebrew",
+  "version": "0.0.0",
+  "description": "Homebrew spells and items for the Aspects of Verun / Remnara campaign setting.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "validate": "node scripts/validate.mjs",
+    "test": "node scripts/test.mjs",
+    "generate": "node scripts/generate.mjs",
+    "link-spells": "node scripts/link-spells.mjs"
+  },
+  "devDependencies": {
+    "@foundryvtt/foundryvtt-cli": "^1.1.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "_FIXTURE_NOTES": "Pattern: simple loot/treasure. type='loot'. No activities, no effects. Just name, description, price, weight, rarity. Used for gems, art objects, junk, currency items.",
+  "_id": "ilexample0000001",
+  "name": "Fixture — Loot Item",
+  "type": "loot",
+  "img": "icons/commodities/gems/gem-faceted-round-red.webp",
+  "system": {
+    "description": { "value": "<p>A simple loot item with no mechanics.</p>", "chat": "" },
+    "source": { "book": "Fixtures", "page": "", "license": "" },
+    "identifier": "fixture-loot-item",
+    "quantity": 1,
+    "weight": { "value": 0.1, "units": "lb" },
+    "price": { "value": 250, "denomination": "gp" },
+    "attunement": "",
+    "equipped": false,
+    "rarity": "uncommon",
+    "identified": true,
+    "type": { "value": "gem", "subtype": "" }
+  },
+  "flags": {},
+  "effects": [],
+  "folder": null, "sort": 0,
+  "ownership": { "default": 0 },
+  "_stats": {
+    "compendiumSource": null, "duplicateSource": null,
+    "coreVersion": "13.351", "systemVersion": "5.3.0",
+    "createdTime": null, "modifiedTime": null, "lastModifiedBy": null
+  }
+}

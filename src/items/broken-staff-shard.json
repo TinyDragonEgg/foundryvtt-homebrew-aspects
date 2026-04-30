@@ -1,0 +1,183 @@
+{
+  "_id": "bssexample000001",
+  "name": "Broken Staff Shard",
+  "type": "weapon",
+  "img": "icons/weapons/staves/staff-simple-brown.webp",
+  "system": {
+    "description": {
+      "value": "<p>A jagged shard of what was once a great arcane staff. The crackling energies contained within have not faded despite the staff's ruin. Requires attunement by a sorcerer, warlock, or wizard.</p><p>While attuned, you gain a +2 bonus to spell attack rolls and you regain 1d6+2 expended charges at dawn (maximum 50).</p><p><strong>Crackling Surge.</strong> When you make a ranged spell attack, you can channel the shard's energy. On a hit, the attack deals an additional 1d10 force damage.</p><p><strong>Arcane Overload (15 charges).</strong> As an action, expend 15 charges. Each creature in a 20-foot-radius sphere centred on you must make a DC 16 Constitution saving throw, taking 8d6 force damage on a failure or half on a success.</p>",
+      "chat": ""
+    },
+    "source": { "book": "Aspects of Verun Homebrew", "page": "", "license": "" },
+    "identifier": "broken-staff-shard",
+    "quantity": 1,
+    "weight": { "value": 4, "units": "lb" },
+    "price": { "value": 0, "denomination": "gp" },
+    "attunement": "required",
+    "equipped": false,
+    "rarity": "veryRare",
+    "identified": true,
+    "activation": { "type": "action", "value": 1, "condition": "" },
+    "duration": { "value": "", "units": "", "special": "" },
+    "target": {
+      "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+      "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+      "prompt": true
+    },
+    "range": { "value": 5, "units": "ft", "special": "" },
+    "uses": {
+      "value": 50,
+      "max": "50",
+      "recovery": [{ "period": "dawn", "type": "formula", "formula": "1d6+2" }],
+      "spent": 0
+    },
+    "damage": {
+      "base": {
+        "custom": { "enabled": false, "formula": "" },
+        "number": 1, "denomination": 6, "bonus": "",
+        "types": ["bludgeoning"],
+        "scaling": { "mode": "whole", "number": 1 }
+      },
+      "versatile": {
+        "custom": { "enabled": false, "formula": "" },
+        "number": 1, "denomination": 8, "bonus": "",
+        "types": ["bludgeoning"],
+        "scaling": { "mode": "whole", "number": 1 }
+      }
+    },
+    "critical": { "threshold": null, "damage": "" },
+    "type": { "value": "simpleM", "subtype": "" },
+    "properties": ["ver"],
+    "proficiencyMultiplier": 1,
+    "magicalBonus": 2,
+    "enchantment": null,
+    "activities": {
+      "bsscsurge0000001": {
+        "_id": "bsscsurge0000001",
+        "type": "attack",
+        "name": "Crackling Surge",
+        "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
+        "attack": {
+          "ability": "",
+          "bonus": "",
+          "critical": { "threshold": null, "damage": "" },
+          "flat": false,
+          "type": { "value": "ranged", "classification": "spell" }
+        },
+        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": false },
+        "damage": {
+          "includeBase": false,
+          "parts": [
+            {
+              "base": true, "bonus": "",
+              "custom": { "enabled": false, "formula": "" },
+              "denomination": 10, "number": 1,
+              "scaling": { "mode": "whole", "number": null },
+              "types": ["force"]
+            }
+          ]
+        },
+        "description": { "chatFlavor": "" },
+        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "effects": [],
+        "range": { "value": 60, "units": "ft", "special": "", "override": false },
+        "target": {
+          "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+          "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+          "prompt": true, "override": false
+        },
+        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+        "visibility": { "override": false, "replacementAbility": "" },
+        "sort": 0
+      },
+      "bssoverload00001": {
+        "_id": "bssoverload00001",
+        "type": "save",
+        "name": "Arcane Overload",
+        "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
+        "consumption": {
+          "targets": [{ "type": "itemUses", "value": "15", "target": "" }],
+          "scaling": { "allowed": false, "max": "" },
+          "spellSlot": false
+        },
+        "damage": {
+          "onSave": "half",
+          "includeBase": false,
+          "parts": [
+            {
+              "base": true, "bonus": "",
+              "custom": { "enabled": false, "formula": "" },
+              "denomination": 6, "number": 8,
+              "scaling": { "mode": "", "number": null },
+              "types": ["force"]
+            }
+          ]
+        },
+        "description": { "chatFlavor": "" },
+        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "effects": [],
+        "range": { "value": null, "units": "self", "special": "", "override": true },
+        "save": {
+          "ability": ["con"],
+          "dc": { "formula": "16", "calculation": "" }
+        },
+        "target": {
+          "template": { "count": "1", "contiguous": false, "type": "radius", "size": "20", "width": "", "height": "", "units": "ft" },
+          "affects": { "count": "", "type": "creature", "choice": false, "special": "" },
+          "prompt": true, "override": true
+        },
+        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+        "visibility": { "override": false, "replacementAbility": "" },
+        "sort": 10
+      },
+      "bsscastsurge0001": {
+        "_id": "bsscastsurge0001",
+        "type": "cast",
+        "name": "Cast Crackling Surge",
+        "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
+        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": false },
+        "description": { "chatFlavor": "" },
+        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "effects": [],
+        "range": { "value": null, "units": "", "special": "", "override": false },
+        "spell": {
+          "uuid": "",
+          "name": "Crackling Surge"
+        },
+        "target": {
+          "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+          "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+          "prompt": true, "override": false
+        },
+        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+        "visibility": { "override": false, "replacementAbility": "" },
+        "sort": 20
+      }
+    }
+  },
+  "flags": {
+    "dnd5e": {
+      "riders": { "activity": [] }
+    }
+  },
+  "effects": [
+    {
+      "_id": "bssspellbonus001",
+      "name": "Spell Attack Bonus +2",
+      "img": "icons/magic/symbols/runes-star-orange.webp",
+      "type": "base",
+      "system": {},
+      "changes": [{ "key": "system.bonuses.spell.attack", "mode": 2, "value": "2", "priority": 20 }],
+      "disabled": false,
+      "duration": { "startTime": null, "seconds": null, "combat": null, "rounds": null, "turns": null, "startRound": null, "startTurn": null },
+      "description": "", "origin": null, "tint": null, "transfer": true, "statuses": [], "flags": {}
+    }
+  ],
+  "folder": null, "sort": 0,
+  "ownership": { "default": 0 },
+  "_stats": {
+    "compendiumSource": null, "duplicateSource": null,
+    "coreVersion": "13.351", "systemVersion": "5.3.0",
+    "createdTime": null, "modifiedTime": null, "lastModifiedBy": null
+  }
+}

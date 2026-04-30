@@ -1,0 +1,45 @@
+{
+  "_FIXTURE_NOTES": "AI format input example for a magical weapon. Set _aiFormat: true. Never include _id fields — the importer generates all IDs. Use spellName instead of spell UUIDs for cast activities. The importer converts this to a full Foundry document before importing.",
+  "_aiFormat": true,
+  "name": "Example Staff of Crackling Force",
+  "itemCategory": "weapon",
+  "type": "weapon",
+  "rarity": "veryRare",
+  "attunement": "sorcerer, warlock, or wizard",
+  "charges": { "max": 20, "recovery": { "period": "lr" } },
+  "magicalBonus": 2,
+  "spellAttackBonus": 2,
+  "baseWeapon": "quarterstaff",
+  "imageHints": ["staff", "arcane", "force", "lightning"],
+  "description": "<p>A crackling staff humming with contained force. Regains 1d6+2 charges at dawn.</p>",
+  "activities": [
+    {
+      "name": "Crackling Surge",
+      "type": "attack",
+      "chargesCost": 0,
+      "attackType": "ranged spell",
+      "damage": "1d10",
+      "damageType": "force",
+      "range": 60,
+      "scaling": "whole"
+    },
+    {
+      "name": "Arcane Overload",
+      "type": "save",
+      "chargesCost": 10,
+      "saveAbility": "con",
+      "saveDC": 16,
+      "damage": "8d6",
+      "damageType": "force",
+      "onSave": "half",
+      "aoeType": "radius",
+      "aoeSize": 20
+    },
+    {
+      "name": "Cast Crackling Surge",
+      "type": "cast",
+      "spellName": "Crackling Surge",
+      "chargesCost": 0
+    }
+  ]
+}

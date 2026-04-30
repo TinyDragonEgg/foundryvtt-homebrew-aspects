@@ -1,0 +1,50 @@
+{
+  "id": "aspects-of-verun-homebrew",
+  "title": "Aspects of Verun — Homebrew",
+  "description": "Homebrew spells and items for the Aspects of Verun / Remnara campaign setting.",
+  "version": "0.0.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13.351"
+  },
+  "authors": [
+    {
+      "name": "TinyDragonEgg",
+      "url": "https://github.com/TinyDragonEgg"
+    }
+  ],
+  "esmodules": ["scripts/main.mjs"],
+  "styles": ["styles/importer.css"],
+  "languages": [],
+  "packs": [
+    {
+      "name": "spells",
+      "label": "Aspects of Verun — Spells",
+      "path": "packs/spells",
+      "type": "Item",
+      "system": "dnd5e"
+    },
+    {
+      "name": "items",
+      "label": "Aspects of Verun — Items",
+      "path": "packs/items",
+      "type": "Item",
+      "system": "dnd5e"
+    }
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "5.3.0",
+          "verified": "5.3.0"
+        }
+      }
+    ]
+  },
+  "url": "https://github.com/TinyDragonEgg/foundryvtt-homebrew-aspects",
+  "manifest": "https://github.com/TinyDragonEgg/foundryvtt-homebrew-aspects/releases/latest/download/module.json",
+  "download": ""
+}

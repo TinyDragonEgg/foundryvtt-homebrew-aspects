@@ -1,0 +1,144 @@
+{{!-- Aspects of Verun — Importer ApplicationV2 template --}}
+<div class="aov-importer-body">
+
+  {{!-- Tab bar --}}
+  <nav class="aov-importer-tabs" role="tablist">
+    <button type="button"
+      class="aov-importer-tab {{#if (eq activeTab 'import')}}active{{/if}}"
+      data-action="switchTab" data-tab="import" role="tab">
+      <i class="fas fa-file-import"></i> Import
+    </button>
+    <button type="button"
+      class="aov-importer-tab {{#if (eq activeTab 'log')}}active{{/if}}"
+      data-action="switchTab" data-tab="log" role="tab">
+      <i class="fas fa-list-ul"></i> Log
+      {{#if logLines.length}}<span class="aov-importer-badge">{{logLines.length}}</span>{{/if}}
+    </button>
+    <button type="button"
+      class="aov-importer-tab {{#if (eq activeTab 'settings')}}active{{/if}}"
+      data-action="switchTab" data-tab="settings" role="tab">
+      <i class="fas fa-cog"></i> Settings
+    </button>
+  </nav>
+
+  {{!-- ── IMPORT TAB ── --}}
+  {{#if (eq activeTab 'import')}}
+  <section class="aov-importer-panel" role="tabpanel">
+
+    <div class="aov-importer-toolbar">
+      <button type="button" class="aov-importer-btn" data-action="openFilePicker">
+        <i class="fas fa-folder-open"></i> Load File
+      </button>
+      <span class="aov-importer-label">or paste JSON below:</span>
+    </div>
+
+    <textarea
+      class="aov-importer-json-input"
+      placeholder='Paste Foundry Item JSON or AI-format JSON here…&#10;&#10;Single item or array of items.'
+      spellcheck="false"
+      rows="12"></textarea>
+
+    <div class="aov-importer-parse-row">
+      <button type="button" class="aov-importer-btn aov-btn-primary" data-action="parseJson">
+        <i class="fas fa-search"></i> Parse
+      </button>
+
+      {{#if hasDocs}}
+      <span class="aov-importer-status aov-status-ok">
+        <i class="fas fa-check-circle"></i> {{docCount}} item(s) ready
+      </span>
+      {{/if}}
+
+      {{#if hasErrors}}
+      <span class="aov-importer-status aov-status-error">
+        <i class="fas fa-exclamation-triangle"></i> {{parseErrors.length}} error(s)
+      </span>
+      {{/if}}
+    </div>
+
+    {{#if parseErrors.length}}
+    <ul class="aov-importer-error-list">
+      {{#each parseErrors}}
+      <li><i class="fas fa-times-circle"></i> {{this}}</li>
+      {{/each}}
+    </ul>
+    {{/if}}
+
+    {{#if hasDocs}}
+    <details class="aov-importer-preview">
+      <summary>Preview ({{docCount}} item{{#if (gt docCount 1)}}s{{/if}})</summary>
+      <ul class="aov-importer-preview-list">
+        {{#each parsedDocs}}
+        <li>
+          <strong>{{this.converted.name}}</strong>
+          <span class="aov-importer-meta">{{this.converted.type}}</span>
+          {{#if this.isAiFormat}}<em class="aov-importer-tag">AI format</em>{{/if}}
+        </li>
+        {{/each}}
+      </ul>
+    </details>
+
+    <div class="aov-importer-import-row">
+      <label class="aov-importer-check-label">
+        <input type="checkbox" class="aov-overwrite-check" {{#if settings.overwrite}}checked{{/if}}>
+        Overwrite existing items
+      </label>
+
+      <button type="button"
+        class="aov-importer-btn aov-btn-import {{#if importing}}aov-btn-disabled{{/if}}"
+        data-action="startImport"
+        {{#if importing}}disabled{{/if}}>
+        {{#if importing}}
+          <i class="fas fa-spinner fa-spin"></i> Importing… ({{importProgress}}%)
+        {{else}}
+          <i class="fas fa-cloud-upload-alt"></i> Import {{docCount}} Item{{#if (gt docCount 1)}}s{{/if}}
+        {{/if}}
+      </button>
+    </div>
+
+    {{#if importing}}
+    <div class="aov-importer-progress-bar">
+      <div class="aov-importer-progress-fill" style="width: {{importProgress}}%"></div>
+    </div>
+    {{/if}}
+
+    {{/if}}{{!-- hasDocs --}}
+  </section>
+  {{/if}}
+
+  {{!-- ── LOG TAB ── --}}
+  {{#if (eq activeTab 'log')}}
+  <section class="aov-importer-panel" role="tabpanel">
+    <div class="aov-importer-log-toolbar">
+      <button type="button" class="aov-importer-btn aov-btn-sm" data-action="clearLog">
+        <i class="fas fa-trash"></i> Clear
+      </button>
+      <span class="aov-importer-label">{{logLines.length}} line(s)</span>
+    </div>
+    <pre class="aov-importer-log-output">{{#each logLines}}{{this}}&#10;{{/each}}</pre>
+  </section>
+  {{/if}}
+
+  {{!-- ── SETTINGS TAB ── --}}
+  {{#if (eq activeTab 'settings')}}
+  <section class="aov-importer-panel aov-importer-settings-panel" role="tabpanel">
+    <p class="aov-importer-settings-hint">
+      These settings mirror the module settings in the Foundry settings menu.
+      Changes here take effect immediately for the current import session.
+    </p>
+    <dl class="aov-importer-settings-list">
+      <dt>Auto-resolve images</dt>
+      <dd>{{#if settings.autoResolveImages}}Enabled{{else}}Disabled{{/if}}
+        — change in <em>Module Settings → Aspects of Verun</em></dd>
+      <dt>Auto-create folders</dt>
+      <dd>{{#if settings.autoCreateFolders}}Enabled{{else}}Disabled{{/if}}</dd>
+      <dt>Backup on overwrite</dt>
+      <dd>{{#if settings.overwrite}}Enabled{{else}}Disabled{{/if}}</dd>
+    </dl>
+    <p class="aov-importer-settings-hint">
+      Open <strong>Game Settings → Module Settings → Aspects of Verun</strong> to change these.
+    </p>
+  </section>
+  {{/if}}
+
+</div>

@@ -66,6 +66,11 @@ export async function generateItems(prompt, apiKey, model) {
     throw new Error("No Claude API key configured — add it in Module Settings → Aspects of Verun → Claude API Key.");
   }
 
+  // Estimate item count from numbered-list prefix ("1. … 2. …") or single item.
+  // Budget ~400 output tokens per item, minimum 2048, maximum 8192 (model hard cap).
+  const itemCount = (prompt.match(/^\d+\./gm) ?? []).length || 1;
+  const maxTokens = Math.min(8192, Math.max(2048, itemCount * 400));
+
   const res = await fetch(API_URL, {
     method: "POST",
     headers: {
@@ -76,7 +81,7 @@ export async function generateItems(prompt, apiKey, model) {
     },
     body: JSON.stringify({
       model: model || "claude-haiku-4-5-20251001",
-      max_tokens: 4096,
+      max_tokens: maxTokens,
       system: SYSTEM_PROMPT,
       messages: [{ role: "user", content: prompt }],
     }),
@@ -89,6 +94,9 @@ export async function generateItems(prompt, apiKey, model) {
   }
 
   const data = await res.json();
+  if (data.stop_reason === "max_tokens") {
+    throw new Error(`Response was cut off — the batch is too large for one call (hit ${maxTokens} token limit). Split into smaller batches of 10–15 items and try again.`);
+  }
   const text = data.content?.[0]?.text ?? "";
 
   const usage = data.usage ?? {};

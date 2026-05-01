@@ -47,6 +47,7 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
   _importProgress = 0;
 
   _generatePrompt = "";
+  _generateCount = 1;
   _generating = false;
   _generateError = "";
 
@@ -73,6 +74,7 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
       hasDocs:         this._parsedDocs.length > 0,
       generating:      this._generating,
       generateError:   this._generateError,
+      generateCount:   this._generateCount,
       hasApiKey:       !!apiKey,
       modelLabel,
       settings: {
@@ -101,6 +103,8 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
   _restoreGeneratePrompt() {
     const ta = this.element.querySelector(".aov-generate-prompt");
     if (ta && this._generatePrompt) ta.value = this._generatePrompt;
+    const ct = this.element.querySelector(".aov-generate-count");
+    if (ct) ct.value = this._generateCount;
   }
 
   _scrollLogToBottom() {
@@ -200,6 +204,10 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
     const prompt = ta?.value?.trim() ?? "";
     this._generatePrompt = prompt;
 
+    const countEl = this.element.querySelector(".aov-generate-count");
+    const count = Math.max(1, Math.min(10, parseInt(countEl?.value ?? "1") || 1));
+    this._generateCount = count;
+
     if (!prompt) {
       this._generateError = "Describe the item(s) you want to generate.";
       return this.render();
@@ -212,8 +220,12 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this._generateError = "";
     this.render();
 
+    const finalPrompt = count > 1
+      ? `Generate exactly ${count} items as a JSON array.\n\n${prompt}`
+      : prompt;
+
     try {
-      const { json, inputTokens, outputTokens, costUsd } = await generateItems(prompt, apiKey, model);
+      const { json, inputTokens, outputTokens, costUsd } = await generateItems(finalPrompt, apiKey, model);
 
       // Populate the import textarea and auto-parse, then switch to Import tab
       this._jsonDraft = json;

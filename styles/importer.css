@@ -385,6 +385,26 @@
   background: #3a0066;
 }
 
+.aov-generate-count-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary, #6b6860);
+  white-space: nowrap;
+}
+
+.aov-generate-count {
+  width: 46px;
+  padding: 5px 6px;
+  border: 1px solid var(--color-border-dark, #7a7971);
+  border-radius: 3px;
+  background: #fafaf8;
+  font-size: 13px;
+  text-align: center;
+}
+
 .aov-generate-warning {
   background: #fff8e6;
   border: 1px solid #d4a017;

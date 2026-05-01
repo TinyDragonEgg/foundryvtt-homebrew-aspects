@@ -149,12 +149,15 @@
         {{#if generating}}
           <i class="fas fa-spinner fa-spin"></i> Generating…
         {{else}}
-          <i class="fas fa-wand-magic-sparkles"></i> Generate with Claude
+          <i class="fas fa-wand-magic-sparkles"></i> Generate
         {{/if}}
       </button>
-      <span class="aov-importer-label">
-        Items will appear on the Import tab ready to review.
-      </span>
+      <label class="aov-generate-count-label">
+        <span>×</span>
+        <input type="number" class="aov-generate-count" min="1" max="10" value="{{generateCount}}"
+          {{#if generating}}disabled{{/if}}>
+      </label>
+      <span class="aov-importer-label">Items appear on Import tab ready to review.</span>
     </div>
 
   </section>

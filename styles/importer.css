@@ -9,10 +9,11 @@
 .aov-importer-window {
   --aov-text:        #191813;
   --aov-text-dim:    #5a5650;
-  --aov-bg:          #f0ece3;
-  --aov-bg-input:    #fafaf8;
+  --aov-bg:          var(--dnd5e-color-parchment, #ede0c4);
+  --aov-bg-tab:      color-mix(in srgb, var(--aov-bg) 80%, #b8a88a 20%);
+  --aov-bg-input:    #fdf9f2;
   --aov-bg-dark:     #1a1a1a;
-  --aov-border:      #9a9589;
+  --aov-border:      #9a8a70;
   --aov-purple:      #4b0082;
   --aov-green:       #1a5c2a;
   --aov-red-bg:      #fff0f0;
@@ -62,7 +63,7 @@
   display: flex;
   gap: 0;
   border-bottom: 2px solid var(--aov-border);
-  background: #e8e4da;
+  background: var(--aov-bg-tab, #d8c8a8);
   flex-shrink: 0;
 }
 
@@ -125,7 +126,7 @@
   padding: 5px 10px;
   border: 1px solid var(--aov-border);
   border-radius: 3px;
-  background: #e8e4da;
+  background: var(--aov-bg-tab, #d8c8a8);
   color: var(--aov-text);
   font-size: 12px;
   cursor: pointer;
@@ -134,7 +135,7 @@
 }
 
 .aov-importer-btn:hover {
-  background: #d8d4ca;
+  background: color-mix(in srgb, var(--aov-bg-tab, #d8c8a8) 70%, #8a7a60 30%);
 }
 
 .aov-btn-primary {
@@ -515,7 +516,7 @@
   padding: 4px 10px;
   border: 1px solid var(--aov-border);
   border-radius: 3px;
-  background: #e8e4da;
+  background: var(--aov-bg-tab, #d8c8a8);
   color: var(--aov-text);
   cursor: pointer;
   font-size: 12px;
@@ -541,7 +542,7 @@
   padding: 5px 10px;
   border: 1px solid var(--aov-border);
   border-radius: 3px;
-  background: #e8e4da;
+  background: var(--aov-bg-tab, #d8c8a8);
   color: var(--aov-text);
   font-size: 12px;
   cursor: pointer;

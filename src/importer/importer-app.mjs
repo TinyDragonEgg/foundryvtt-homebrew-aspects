@@ -129,7 +129,7 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
       return;
     }
 
-    const overwrite = target.closest("form")?.querySelector(".aov-overwrite-check")?.checked ?? false;
+    const overwrite = this.element.querySelector(".aov-overwrite-check")?.checked ?? false;
     const backup = game.settings.get(MODULE_ID, "backupOnOverwrite");
 
     this._importing = true;

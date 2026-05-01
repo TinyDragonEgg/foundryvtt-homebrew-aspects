@@ -61,11 +61,11 @@ function validateDoc(doc) {
 
     if (act.type === "cast") {
       const uuid = act?.spell?.uuid ?? "";
-      const nameHint = act?.spell?.name ?? "";
+      const nameHint = act?.flags?.["aspects-of-verun-homebrew"]?.spellNameHint ?? "";
       if (!uuid && !nameHint) {
         errors.push(
-          `Cast activity "${act.name ?? act._id}" — spell.uuid is empty and no spell.name hint\n` +
-          `    Fix: add "name": "Spell Name" inside the spell object`
+          `Cast activity "${act.name ?? act._id}" — spell.uuid is empty and no spellNameHint\n` +
+          `    Fix: add flags["aspects-of-verun-homebrew"].spellNameHint = "Spell Name" on the cast activity`
         );
       }
     }
@@ -277,17 +277,18 @@ function testCastActivityHint() {
           type: "cast",
           name: "Cast Something",
           consumption: { targets: [] },
-          spell: { uuid: "", name: "" },
+          spell: { uuid: "" },
+          flags: {},
         },
       },
     },
-    flags: { dnd5e: { riders: { activity: [] } } },
+    flags: {},
   };
   const errors = validateDoc(noHintDoc);
-  if (errors.some((e) => e.includes("spell.uuid is empty") && e.includes("spell.name hint"))) {
+  if (errors.some((e) => e.includes("spell.uuid is empty") && e.includes("spellNameHint"))) {
     pass("Cast activity: missing hint detected");
   } else {
-    fail("Cast activity: missing hint detected", ["Expected error about missing spell.name hint"]);
+    fail("Cast activity: missing hint detected", ["Expected error about missing spellNameHint"]);
   }
 
   const withHintDoc = {
@@ -301,16 +302,17 @@ function testCastActivityHint() {
           type: "cast",
           name: "Cast Something",
           consumption: { targets: [] },
-          spell: { uuid: "", name: "Crackling Surge" },
+          spell: { uuid: "" },
+          flags: { "aspects-of-verun-homebrew": { spellNameHint: "Crackling Surge" } },
         },
       },
     },
-    flags: { dnd5e: { riders: { activity: [] } } },
+    flags: {},
   };
   const goodErrors = validateDoc(withHintDoc);
   const castErrors = goodErrors.filter((e) => e.includes("cast") || e.includes("spell"));
-  if (castErrors.length === 0) pass("Cast activity: name hint accepted");
-  else fail("Cast activity: name hint accepted", castErrors);
+  if (castErrors.length === 0) pass("Cast activity: spellNameHint accepted");
+  else fail("Cast activity: spellNameHint accepted", castErrors);
 }
 
 // ─── MAIN ─────────────────────────────────────────────────────────────────────

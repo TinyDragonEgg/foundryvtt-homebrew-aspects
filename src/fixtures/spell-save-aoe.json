@@ -1,5 +1,5 @@
 {
-  "_FIXTURE_NOTES": "Pattern: utility launcher + save rider with AoE target. save.dc.calculation='spellcasting' — never hardcode a number on standalone spells. The AoE is defined in the save activity's target.template, not the spell-level target.",
+  "_FIXTURE_NOTES": "Pattern: save-or-suck AoE spell. Single dnd5eactivity000 save activity with AoE target.template (override: true). save.dc.calculation='spellcasting'. No utility launcher, no riders flag.",
   "_id": "ssaexample000001",
   "name": "Fixture — Save AoE Spell",
   "type": "spell",
@@ -8,70 +8,47 @@
     "description": { "value": "<p>A save-or-suck AoE spell fixture.</p>", "chat": "" },
     "source": { "book": "Fixtures", "page": "", "license": "" },
     "identifier": "fixture-save-aoe-spell",
-    "activation": { "type": "action", "value": 1, "condition": "" },
-    "duration": { "value": "", "units": "inst", "special": "" },
+    "activation": { "type": "action", "condition": "", "value": 1 },
+    "duration": { "value": "", "units": "inst" },
     "target": {
       "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
       "affects": { "count": "", "type": "creature", "choice": false, "special": "" },
       "prompt": true
     },
     "range": { "value": null, "units": "self", "special": "" },
-    "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+    "uses": { "max": "", "recovery": [], "spent": 0 },
     "level": 3,
     "school": "evo",
     "properties": ["vocal", "somatic"],
     "materials": { "value": "", "consumed": false, "cost": 0, "supply": 0 },
     "preparation": { "mode": "prepared", "prepared": false },
-    "scaling": { "mode": "whole", "formula": "1d8" },
     "activities": {
-      "ssaexlaunch00001": {
-        "_id": "ssaexlaunch00001",
-        "type": "utility",
-        "name": "Fixture — Save AoE Spell",
-        "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
-        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": false },
-        "description": { "chatFlavor": "" },
-        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
-        "effects": [],
-        "range": { "value": null, "units": "", "special": "", "override": false },
-        "target": {
-          "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
-          "affects": { "count": "", "type": "creature", "choice": false, "special": "" },
-          "prompt": true,
-          "override": false
-        },
-        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
-        "visibility": { "override": false, "replacementAbility": "" },
-        "sort": 0
-      },
-      "ssaexsave0000001": {
-        "_id": "ssaexsave0000001",
+      "dnd5eactivity000": {
+        "_id": "dnd5eactivity000",
         "type": "save",
-        "name": "Fixture — Save AoE Spell — Save",
-        "activation": { "type": "special", "value": null, "override": true, "condition": "" },
-        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": false },
+        "name": "Cast",
+        "activation": { "type": "action", "value": null, "override": false, "condition": "" },
+        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": true },
         "damage": {
           "onSave": "half",
-          "includeBase": false,
           "parts": [
             {
-              "base": true,
-              "bonus": "",
-              "custom": { "enabled": false, "formula": "" },
-              "denomination": 8,
               "number": 8,
-              "scaling": { "mode": "whole", "number": null },
-              "types": ["fire"]
+              "denomination": 8,
+              "bonus": "",
+              "types": ["fire"],
+              "custom": { "enabled": false, "formula": "" },
+              "scaling": { "mode": "whole", "number": 1, "formula": "" }
             }
           ]
         },
         "description": { "chatFlavor": "" },
-        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "duration": { "units": "inst", "concentration": false, "override": false },
         "effects": [],
-        "range": { "value": null, "units": "self", "special": "", "override": true },
+        "range": { "override": true },
         "save": {
           "ability": ["dex"],
-          "dc": { "formula": "", "calculation": "spellcasting" }
+          "dc": { "calculation": "spellcasting", "formula": "" }
         },
         "target": {
           "template": { "count": "1", "contiguous": false, "type": "radius", "size": "20", "width": "", "height": "", "units": "ft" },
@@ -79,24 +56,27 @@
           "prompt": true,
           "override": true
         },
-        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
-        "visibility": { "override": false, "replacementAbility": "" },
-        "sort": 10
+        "uses": { "spent": 0, "recovery": [] },
+        "visibility": { "level": { "min": null, "max": null } },
+        "sort": 0,
+        "img": ""
       }
     }
   },
-  "flags": {
-    "dnd5e": {
-      "riders": { "activity": ["ssaexsave0000001"] }
-    }
-  },
+  "flags": {},
   "effects": [],
   "folder": null,
   "sort": 0,
   "ownership": { "default": 0 },
   "_stats": {
-    "compendiumSource": null, "duplicateSource": null,
-    "coreVersion": "13.351", "systemVersion": "5.3.0",
-    "createdTime": null, "modifiedTime": null, "lastModifiedBy": null
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "dnd5e",
+    "systemVersion": "5.3.0",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
   }
 }

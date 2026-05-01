@@ -5,9 +5,10 @@
  */
 
 import {
-  slugify, namePrefix, makeId, parseDice,
+  slugify, namePrefix, makeId, activityId, parseDice,
   damagePart, consumptionTargets,
-  buildUtilityActivity, buildAttackActivity, buildSaveActivity, buildCastActivity,
+  buildWeaponAttackActivity, buildItemSpellAttackActivity,
+  buildItemSaveActivity, buildItemUtilityActivity, buildCastActivity,
   buildBonusEffect, docStats,
 } from "../builders.mjs";
 
@@ -59,56 +60,93 @@ export function convertAiFormat(ai) {
 
   // ── Activities ──────────────────────────────────────────────────────────────
   const activities = {};
-  const riderIds = [];
-  let counter = 1;
+  let position = 0;
 
   for (const actDef of (ai.activities ?? [])) {
-    const actSlug = slugify(actDef.name || actDef.type).slice(0, 10) || "act";
-    const actId = makeId(pfx, actSlug, counter++);
-    const consumption = {
-      targets: consumptionTargets(actDef.chargesCost ?? 0),
-      scaling: { allowed: false, max: "" },
-      spellSlot: false,
-    };
+    const actId = activityId(position++);
+    const chargesCost = actDef.chargesCost ?? 0;
 
     if (actDef.type === "attack") {
       const dice = actDef.damage ? parseDice(actDef.damage) : null;
       const parts = dice
-        ? [damagePart(dice.number, dice.denomination, actDef.damageType ?? "force", actDef.scaling ?? "whole")]
+        ? [damagePart(dice.number, dice.denomination, actDef.damageType ?? "force", actDef.scaling ?? "none")]
         : [];
-      activities[actId] = buildAttackActivity(
-        actId, actDef.name, actDef.attackType ?? "ranged spell", parts, actDef.range ?? 60,
-        { consumption }
-      );
+
+      if (actDef.attackType === "melee weapon") {
+        activities[actId] = buildWeaponAttackActivity(
+          actId, actDef.name, "", "", actDef.range ?? 5, "weapon",
+          chargesCost > 0
+            ? { consumption: { targets: consumptionTargets(chargesCost), scaling: { allowed: false, max: "" }, spellSlot: true } }
+            : {}
+        );
+      } else {
+        const isMelee = actDef.attackType === "melee spell";
+        activities[actId] = buildItemSpellAttackActivity(
+          actId, actDef.name, parts, actDef.range ?? 60, chargesCost,
+          isMelee
+            ? { attack: { ability: "", bonus: "", critical: { threshold: null }, flat: false, type: { value: "melee", classification: "spell" } } }
+            : {}
+        );
+      }
 
     } else if (actDef.type === "save") {
       const dice = actDef.damage ? parseDice(actDef.damage) : null;
       const parts = dice
-        ? [damagePart(dice.number, dice.denomination, actDef.damageType ?? "force", "")]
+        ? [damagePart(dice.number, dice.denomination, actDef.damageType ?? "force", "none")]
         : [];
       const aoe = actDef.aoeType
         ? { type: actDef.aoeType, size: actDef.aoeSize ?? 20, units: "ft" }
         : null;
       const dcCalc = actDef.saveDC ? "" : "spellcasting";
       const dcFormula = actDef.saveDC ? String(actDef.saveDC) : "";
-      activities[actId] = buildSaveActivity(
+      activities[actId] = buildItemSaveActivity(
         actId, actDef.name, actDef.saveAbility ?? "con",
-        dcCalc, dcFormula, parts, actDef.onSave ?? "half", aoe,
-        { consumption }
+        dcCalc, dcFormula, parts, actDef.onSave ?? "half", aoe, chargesCost
       );
 
     } else if (actDef.type === "utility") {
-      activities[actId] = buildUtilityActivity(actId, actDef.name, {
-        activation: { type: "action", value: 1, override: false, condition: "" },
-        consumption,
-      });
+      activities[actId] = buildItemUtilityActivity(actId, actDef.name, chargesCost);
 
     } else if (actDef.type === "cast") {
-      // UUID left empty — patchCastUuids() will fill it in at import time
       activities[actId] = buildCastActivity(
-        actId, actDef.name, "", actDef.spellName ?? "",
-        consumption.targets
+        actId, actDef.name, "", actDef.spellName ?? "", chargesCost
       );
+
+    } else if (actDef.type === "heal") {
+      const dice = actDef.healDice ? parseDice(actDef.healDice) : { number: 2, denomination: 4 };
+      activities[actId] = {
+        _id: actId,
+        type: "heal",
+        name: actDef.name,
+        activation: { type: "action", value: 1, override: false, condition: "" },
+        consumption: {
+          targets: consumptionTargets(chargesCost),
+          scaling: { allowed: false, max: "" },
+          spellSlot: true,
+        },
+        description: { chatFlavor: "" },
+        duration: { value: "", units: "", special: "", concentration: false, override: false },
+        effects: [],
+        healing: {
+          custom: { enabled: false, formula: "" },
+          denomination: dice.denomination,
+          number: dice.number,
+          bonus: actDef.healBonus ?? "",
+          types: ["healing"],
+          scaling: { mode: "", number: null, formula: "" },
+        },
+        range: { value: null, units: "self", special: "", override: false },
+        target: {
+          template: { count: "", contiguous: false, type: "", size: "", width: "", height: "", units: "" },
+          affects: { count: "1", type: "self", choice: false, special: "" },
+          prompt: false,
+          override: false,
+        },
+        uses: { spent: 0, recovery: [], max: "" },
+        visibility: { level: { min: null, max: null } },
+        sort: 0,
+        img: "",
+      };
 
     } else {
       throw new Error(`Unknown activity type "${actDef.type}" in AI document "${ai.name}"`);
@@ -197,7 +235,6 @@ export function convertAiFormat(ai) {
     img: "icons/svg/mystery-man.svg", // resolved by image-resolver.mjs later
     system,
     flags: {
-      dnd5e: { riders: { activity: riderIds } },
       "aspects-of-verun-homebrew": {
         imageHints: ai.imageHints ?? [],
       },

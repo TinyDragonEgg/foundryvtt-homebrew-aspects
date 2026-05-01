@@ -1,5 +1,5 @@
 {
-  "_FIXTURE_NOTES": "Pattern: wondrous item (equipment type). No weapon fields. Activities still use spellSlot: false and itemUses consumption. Rarity 'veryRare'. Attunement 'required'.",
+  "_FIXTURE_NOTES": "Pattern: wondrous item (equipment type). dnd5eactivity000 = utility activity consuming 1 charge. visibility.requireMagic: true for magical activation. Rarity 'veryRare'. Attunement 'required'. No riders flag.",
   "_id": "iewexample000001",
   "name": "Fixture — Wondrous Item",
   "type": "equipment",
@@ -32,38 +32,48 @@
     "type": { "value": "trinket", "subtype": "" },
     "armor": { "value": 0, "dex": null, "magicalBonus": null },
     "activities": {
-      "iewexutility0001": {
-        "_id": "iewexutility0001",
+      "dnd5eactivity000": {
+        "_id": "dnd5eactivity000",
         "type": "utility",
         "name": "Activate",
         "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
         "consumption": {
           "targets": [{ "type": "itemUses", "value": "1", "target": "" }],
           "scaling": { "allowed": false, "max": "" },
-          "spellSlot": false
+          "spellSlot": true
         },
         "description": { "chatFlavor": "" },
-        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "duration": { "value": "", "units": "", "special": "", "concentration": false, "override": false },
         "effects": [],
         "range": { "value": null, "units": "", "special": "", "override": false },
+        "roll": { "formula": "", "name": "", "prompt": false, "visible": false },
         "target": {
           "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
           "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
-          "prompt": true, "override": false
+          "prompt": true,
+          "override": false
         },
-        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
-        "visibility": { "override": false, "replacementAbility": "" },
-        "sort": 0
+        "uses": { "spent": 0, "recovery": [], "max": "" },
+        "visibility": { "requireMagic": true, "level": { "min": null, "max": null }, "identifier": "" },
+        "sort": 0,
+        "img": ""
       }
     }
   },
-  "flags": { "dnd5e": { "riders": { "activity": [] } } },
+  "flags": {},
   "effects": [],
-  "folder": null, "sort": 0,
+  "folder": null,
+  "sort": 0,
   "ownership": { "default": 0 },
   "_stats": {
-    "compendiumSource": null, "duplicateSource": null,
-    "coreVersion": "13.351", "systemVersion": "5.3.0",
-    "createdTime": null, "modifiedTime": null, "lastModifiedBy": null
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "dnd5e",
+    "systemVersion": "5.3.0",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
   }
 }

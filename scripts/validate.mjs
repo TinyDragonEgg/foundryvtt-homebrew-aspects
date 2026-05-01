@@ -73,14 +73,14 @@ function validateDoc(doc, filepath) {
       activityIds.add(act._id);
     }
 
-    // 2c. Cast activities: must have uuid or spell.name hint
+    // 2c. Cast activities: must have uuid or spellNameHint in activity flags
     if (act.type === "cast") {
-      const uuid = act?.spell?.uuid ?? act?.uuid ?? "";
-      const nameHint = act?.spell?.name ?? "";
+      const uuid = act?.spell?.uuid ?? "";
+      const nameHint = act?.flags?.["aspects-of-verun-homebrew"]?.spellNameHint ?? "";
       if (!uuid && !nameHint) {
         errors.push(
-          `Cast activity "${act.name ?? act._id}" — spell.uuid is empty and no spell.name hint provided.\n` +
-          `  Fix: add "name": "Spell Name" inside the spell object, or provide a real UUID`
+          `Cast activity "${act.name ?? act._id}" — spell.uuid is empty and no spellNameHint provided.\n` +
+          `  Fix: add flags["aspects-of-verun-homebrew"].spellNameHint = "Spell Name" on the cast activity`
         );
       }
     }

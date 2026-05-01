@@ -52,114 +52,163 @@
     "magicalBonus": 2,
     "enchantment": null,
     "activities": {
-      "bsscsurge0000001": {
-        "_id": "bsscsurge0000001",
+      "dnd5eactivity000": {
+        "_id": "dnd5eactivity000",
+        "type": "attack",
+        "name": "Attack",
+        "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
+        "attack": {
+          "ability": "",
+          "bonus": "",
+          "critical": { "threshold": null },
+          "flat": false,
+          "type": { "value": "melee", "classification": "weapon" }
+        },
+        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": true },
+        "damage": { "critical": { "bonus": "" }, "includeBase": true, "parts": [] },
+        "description": { "chatFlavor": "" },
+        "duration": { "value": "", "units": "", "special": "", "concentration": false, "override": false },
+        "effects": [],
+        "range": { "value": 5, "units": "ft", "special": "", "override": false },
+        "target": {
+          "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
+          "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+          "prompt": true,
+          "override": false
+        },
+        "uses": { "spent": 0, "recovery": [], "max": "" },
+        "visibility": { "level": { "min": null, "max": null } },
+        "sort": 0,
+        "img": ""
+      },
+      "dnd5eactivity100": {
+        "_id": "dnd5eactivity100",
         "type": "attack",
         "name": "Crackling Surge",
         "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
         "attack": {
           "ability": "",
           "bonus": "",
-          "critical": { "threshold": null, "damage": "" },
+          "critical": { "threshold": null },
           "flat": false,
           "type": { "value": "ranged", "classification": "spell" }
         },
-        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": false },
+        "consumption": {
+          "targets": [{ "type": "itemUses", "value": "1", "target": "" }],
+          "scaling": { "allowed": false, "max": "" },
+          "spellSlot": true
+        },
         "damage": {
+          "critical": { "bonus": "" },
           "includeBase": false,
           "parts": [
             {
-              "base": true, "bonus": "",
+              "number": 1,
+              "denomination": 10,
+              "bonus": "",
+              "types": ["force"],
               "custom": { "enabled": false, "formula": "" },
-              "denomination": 10, "number": 1,
-              "scaling": { "mode": "whole", "number": null },
-              "types": ["force"]
+              "scaling": { "mode": "", "number": null, "formula": "" }
             }
           ]
         },
         "description": { "chatFlavor": "" },
-        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "duration": { "value": "", "units": "", "special": "", "concentration": false, "override": false },
         "effects": [],
         "range": { "value": 60, "units": "ft", "special": "", "override": false },
         "target": {
           "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
           "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
-          "prompt": true, "override": false
+          "prompt": true,
+          "override": false
         },
-        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
-        "visibility": { "override": false, "replacementAbility": "" },
-        "sort": 0
+        "uses": { "spent": 0, "recovery": [], "max": "" },
+        "visibility": { "requireMagic": true, "level": { "min": null, "max": null }, "identifier": "" },
+        "sort": 0,
+        "img": ""
       },
-      "bssoverload00001": {
-        "_id": "bssoverload00001",
+      "dnd5eactivity200": {
+        "_id": "dnd5eactivity200",
         "type": "save",
         "name": "Arcane Overload",
         "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
         "consumption": {
           "targets": [{ "type": "itemUses", "value": "15", "target": "" }],
           "scaling": { "allowed": false, "max": "" },
-          "spellSlot": false
+          "spellSlot": true
         },
         "damage": {
           "onSave": "half",
-          "includeBase": false,
           "parts": [
             {
-              "base": true, "bonus": "",
+              "number": 8,
+              "denomination": 6,
+              "bonus": "",
+              "types": ["force"],
               "custom": { "enabled": false, "formula": "" },
-              "denomination": 6, "number": 8,
-              "scaling": { "mode": "", "number": null },
-              "types": ["force"]
+              "scaling": { "mode": "", "number": null, "formula": "" }
             }
           ]
         },
         "description": { "chatFlavor": "" },
-        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "duration": { "value": "", "units": "", "special": "", "concentration": false, "override": false },
         "effects": [],
         "range": { "value": null, "units": "self", "special": "", "override": true },
         "save": {
           "ability": ["con"],
-          "dc": { "formula": "16", "calculation": "" }
+          "dc": { "calculation": "", "formula": "16" }
         },
         "target": {
           "template": { "count": "1", "contiguous": false, "type": "radius", "size": "20", "width": "", "height": "", "units": "ft" },
           "affects": { "count": "", "type": "creature", "choice": false, "special": "" },
-          "prompt": true, "override": true
+          "prompt": true,
+          "override": true
         },
-        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
-        "visibility": { "override": false, "replacementAbility": "" },
-        "sort": 10
+        "uses": { "spent": 0, "recovery": [], "max": "" },
+        "visibility": { "requireMagic": true, "level": { "min": null, "max": null }, "identifier": "" },
+        "sort": 0,
+        "img": ""
       },
-      "bsscastsurge0001": {
-        "_id": "bsscastsurge0001",
+      "dnd5eactivity300": {
+        "_id": "dnd5eactivity300",
         "type": "cast",
         "name": "Cast Crackling Surge",
         "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
-        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": false },
+        "consumption": {
+          "targets": [],
+          "scaling": { "allowed": false, "max": "" },
+          "spellSlot": true
+        },
         "description": { "chatFlavor": "" },
-        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "duration": { "value": "", "units": "", "special": "", "concentration": false, "override": false },
         "effects": [],
         "range": { "value": null, "units": "", "special": "", "override": false },
         "spell": {
           "uuid": "",
-          "name": "Crackling Surge"
+          "challenge": { "attack": null, "save": null, "override": false },
+          "level": null,
+          "properties": [],
+          "ability": ""
+        },
+        "flags": {
+          "aspects-of-verun-homebrew": {
+            "spellNameHint": "Crackling Surge"
+          }
         },
         "target": {
           "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
           "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
-          "prompt": true, "override": false
+          "prompt": true,
+          "override": false
         },
-        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
-        "visibility": { "override": false, "replacementAbility": "" },
-        "sort": 20
+        "uses": { "spent": 0, "recovery": [], "max": "" },
+        "visibility": { "requireMagic": true, "level": { "min": null, "max": null }, "identifier": "" },
+        "sort": 0,
+        "img": ""
       }
     }
   },
-  "flags": {
-    "dnd5e": {
-      "riders": { "activity": [] }
-    }
-  },
+  "flags": {},
   "effects": [
     {
       "_id": "bssspellbonus001",
@@ -173,11 +222,18 @@
       "description": "", "origin": null, "tint": null, "transfer": true, "statuses": [], "flags": {}
     }
   ],
-  "folder": null, "sort": 0,
+  "folder": null,
+  "sort": 0,
   "ownership": { "default": 0 },
   "_stats": {
-    "compendiumSource": null, "duplicateSource": null,
-    "coreVersion": "13.351", "systemVersion": "5.3.0",
-    "createdTime": null, "modifiedTime": null, "lastModifiedBy": null
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "dnd5e",
+    "systemVersion": "5.3.0",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
   }
 }

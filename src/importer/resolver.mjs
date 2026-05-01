@@ -89,7 +89,7 @@ export async function patchCastUuids(system) {
     if (act.type !== "cast") continue;
     if (act.spell?.uuid) continue; // already has UUID
 
-    const hint = act.spell?.name;
+    const hint = act.flags?.["aspects-of-verun-homebrew"]?.spellNameHint;
     if (!hint) {
       failed.push(`(unnamed cast activity)`);
       continue;

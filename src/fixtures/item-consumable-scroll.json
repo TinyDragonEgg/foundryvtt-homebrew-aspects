@@ -1,5 +1,5 @@
 {
-  "_FIXTURE_NOTES": "Pattern: spell scroll consumable. type='consumable', system.type.value='scroll'. Cast activity references a spell by UUID or spell.name hint. If spell.uuid is empty, the importer resolves it from spell.name. After resolving, spell.name is stripped before Item.create().",
+  "_FIXTURE_NOTES": "Pattern: spell scroll consumable. type='consumable', system.type.value='scroll'. dnd5eactivity000 = cast activity consuming 1 itemUse. Spell UUID is resolved at import time from flags['aspects-of-verun-homebrew'].spellNameHint on the cast activity (NOT from spell.name — that field does not exist in the schema).",
   "_id": "icsexample000001",
   "name": "Fixture — Spell Scroll",
   "type": "consumable",
@@ -32,42 +32,59 @@
     },
     "type": { "value": "scroll", "subtype": "" },
     "activities": {
-      "icsexcast0000001": {
-        "_id": "icsexcast0000001",
+      "dnd5eactivity000": {
+        "_id": "dnd5eactivity000",
         "type": "cast",
         "name": "Cast Spell",
         "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
         "consumption": {
           "targets": [{ "type": "itemUses", "value": "1", "target": "" }],
           "scaling": { "allowed": false, "max": "" },
-          "spellSlot": false
+          "spellSlot": true
         },
         "description": { "chatFlavor": "" },
-        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "duration": { "value": "", "units": "", "special": "", "concentration": false, "override": false },
         "effects": [],
         "range": { "value": null, "units": "", "special": "", "override": false },
         "spell": {
           "uuid": "",
-          "name": "Fixture — Ranged Attack Spell"
+          "challenge": { "attack": null, "save": null, "override": false },
+          "level": null,
+          "properties": [],
+          "ability": ""
+        },
+        "flags": {
+          "aspects-of-verun-homebrew": {
+            "spellNameHint": "Fixture — Ranged Attack Spell"
+          }
         },
         "target": {
           "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
           "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
-          "prompt": true, "override": false
+          "prompt": true,
+          "override": false
         },
-        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
-        "visibility": { "override": false, "replacementAbility": "" },
-        "sort": 0
+        "uses": { "spent": 0, "recovery": [], "max": "" },
+        "visibility": { "requireMagic": true, "level": { "min": null, "max": null }, "identifier": "" },
+        "sort": 0,
+        "img": ""
       }
     }
   },
-  "flags": { "dnd5e": { "riders": { "activity": [] } } },
+  "flags": {},
   "effects": [],
-  "folder": null, "sort": 0,
+  "folder": null,
+  "sort": 0,
   "ownership": { "default": 0 },
   "_stats": {
-    "compendiumSource": null, "duplicateSource": null,
-    "coreVersion": "13.351", "systemVersion": "5.3.0",
-    "createdTime": null, "modifiedTime": null, "lastModifiedBy": null
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "dnd5e",
+    "systemVersion": "5.3.0",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
   }
 }

@@ -1,5 +1,5 @@
 {
-  "_FIXTURE_NOTES": "Pattern: utility-only spell (no attack roll, no save). Used for dispel-type, buff, or utility spells. No riders flag needed. The utility activity IS the full spell — the player clicks it and the chat card appears.",
+  "_FIXTURE_NOTES": "Pattern: utility-only spell (no attack roll, no save). Single dnd5eactivity000 utility activity. Used for dispel-type, buff, or utility spells. The player clicks it and the chat card appears.",
   "_id": "snrexample000001",
   "name": "Fixture — No-Roll Spell",
   "type": "spell",
@@ -8,56 +8,59 @@
     "description": { "value": "<p>A utility spell with no attack or save.</p>", "chat": "" },
     "source": { "book": "Fixtures", "page": "", "license": "" },
     "identifier": "fixture-no-roll-spell",
-    "activation": { "type": "action", "value": 1, "condition": "" },
-    "duration": { "value": "1", "units": "minute", "special": "" },
+    "activation": { "type": "action", "condition": "", "value": 1 },
+    "duration": { "value": "1", "units": "minute" },
     "target": {
       "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
       "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
       "prompt": true
     },
     "range": { "value": 60, "units": "ft", "special": "" },
-    "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+    "uses": { "max": "", "recovery": [], "spent": 0 },
     "level": 2,
     "school": "abj",
     "properties": ["vocal", "somatic"],
     "materials": { "value": "", "consumed": false, "cost": 0, "supply": 0 },
     "preparation": { "mode": "prepared", "prepared": false },
-    "scaling": { "mode": "", "formula": "" },
     "activities": {
-      "snrexlaunch00001": {
-        "_id": "snrexlaunch00001",
+      "dnd5eactivity000": {
+        "_id": "dnd5eactivity000",
         "type": "utility",
-        "name": "Fixture — No-Roll Spell",
-        "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
-        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": false },
+        "name": "Cast",
+        "activation": { "type": "action", "value": null, "override": false, "condition": "" },
+        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": true },
         "description": { "chatFlavor": "" },
-        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "duration": { "units": "inst", "concentration": false, "override": false },
         "effects": [],
-        "range": { "value": null, "units": "", "special": "", "override": false },
+        "range": { "override": false },
+        "roll": { "formula": "", "name": "", "prompt": false, "visible": false },
         "target": {
-          "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
-          "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+          "template": { "contiguous": false, "units": "ft" },
+          "affects": { "choice": false },
           "prompt": true,
           "override": false
         },
-        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
-        "visibility": { "override": false, "replacementAbility": "" },
-        "sort": 0
+        "uses": { "spent": 0, "recovery": [] },
+        "visibility": { "level": { "min": null, "max": null } },
+        "sort": 0,
+        "img": ""
       }
     }
   },
-  "flags": {
-    "dnd5e": {
-      "riders": { "activity": [] }
-    }
-  },
+  "flags": {},
   "effects": [],
   "folder": null,
   "sort": 0,
   "ownership": { "default": 0 },
   "_stats": {
-    "compendiumSource": null, "duplicateSource": null,
-    "coreVersion": "13.351", "systemVersion": "5.3.0",
-    "createdTime": null, "modifiedTime": null, "lastModifiedBy": null
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "dnd5e",
+    "systemVersion": "5.3.0",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
   }
 }

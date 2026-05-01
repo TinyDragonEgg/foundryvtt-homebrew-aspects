@@ -1,5 +1,5 @@
 {
-  "_FIXTURE_NOTES": "Pattern: utility launcher + ranged attack rider. This is the standard pattern for any spell that makes a ranged spell attack roll. The utility activity is what the player clicks; the attack rider fires automatically via the riders flag. dnd5e.riders.activity must list the attack ID.",
+  "_FIXTURE_NOTES": "Pattern: ranged spell attack. Single dnd5eactivity000 attack activity. This is the correct dnd5e 5.x pattern — no utility launcher, no riders flag. The player clicks the activity and it rolls attack + damage in one step.",
   "_id": "sraexample000001",
   "name": "Fixture — Ranged Attack Spell",
   "type": "spell",
@@ -8,97 +8,79 @@
     "description": { "value": "<p>A ranged spell attack spell fixture.</p>", "chat": "" },
     "source": { "book": "Fixtures", "page": "", "license": "" },
     "identifier": "fixture-ranged-attack-spell",
-    "activation": { "type": "action", "value": 1, "condition": "" },
-    "duration": { "value": "", "units": "inst", "special": "" },
+    "activation": { "type": "action", "condition": "", "value": 1 },
+    "duration": { "value": "", "units": "inst" },
     "target": {
       "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
       "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
       "prompt": true
     },
     "range": { "value": 120, "units": "ft", "special": "" },
-    "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
+    "uses": { "max": "", "recovery": [], "spent": 0 },
     "level": 1,
     "school": "evo",
     "properties": ["vocal", "somatic"],
     "materials": { "value": "", "consumed": false, "cost": 0, "supply": 0 },
     "preparation": { "mode": "prepared", "prepared": false },
-    "scaling": { "mode": "whole", "formula": "1d10" },
     "activities": {
-      "sraexlaunch00001": {
-        "_id": "sraexlaunch00001",
-        "type": "utility",
-        "name": "Fixture — Ranged Attack Spell",
-        "activation": { "type": "action", "value": 1, "override": false, "condition": "" },
-        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": false },
-        "description": { "chatFlavor": "" },
-        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
-        "effects": [],
-        "range": { "value": null, "units": "", "special": "", "override": false },
-        "target": {
-          "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
-          "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
-          "prompt": true,
-          "override": false
-        },
-        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
-        "visibility": { "override": false, "replacementAbility": "" },
-        "sort": 0
-      },
-      "sraexattack00001": {
-        "_id": "sraexattack00001",
+      "dnd5eactivity000": {
+        "_id": "dnd5eactivity000",
         "type": "attack",
-        "name": "Fixture — Ranged Attack Spell — Attack",
-        "activation": { "type": "special", "value": null, "override": true, "condition": "" },
+        "name": "Cast",
+        "activation": { "type": "action", "value": null, "override": false, "condition": "" },
         "attack": {
           "ability": "",
           "bonus": "",
-          "critical": { "threshold": null, "damage": "" },
+          "critical": { "threshold": null },
           "flat": false,
           "type": { "value": "ranged", "classification": "spell" }
         },
-        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": false },
+        "consumption": { "targets": [], "scaling": { "allowed": false, "max": "" }, "spellSlot": true },
         "damage": {
-          "includeBase": false,
+          "critical": { "bonus": "" },
+          "includeBase": true,
           "parts": [
             {
-              "base": true,
-              "bonus": "",
-              "custom": { "enabled": false, "formula": "" },
-              "denomination": 10,
               "number": 2,
-              "scaling": { "mode": "whole", "number": null },
-              "types": ["force"]
+              "denomination": 10,
+              "bonus": "",
+              "types": ["force"],
+              "custom": { "enabled": false, "formula": "" },
+              "scaling": { "mode": "whole", "number": 1, "formula": "" }
             }
           ]
         },
         "description": { "chatFlavor": "" },
-        "duration": { "value": "", "units": "inst", "special": "", "override": false, "concentration": false },
+        "duration": { "units": "inst", "concentration": false, "override": false },
         "effects": [],
-        "range": { "value": 120, "units": "ft", "special": "", "override": true },
+        "range": { "override": false },
         "target": {
-          "template": { "count": "", "contiguous": false, "type": "", "size": "", "width": "", "height": "", "units": "" },
-          "affects": { "count": "1", "type": "creature", "choice": false, "special": "" },
+          "template": { "contiguous": false, "units": "ft" },
+          "affects": { "choice": false },
           "prompt": true,
           "override": false
         },
-        "uses": { "value": null, "max": "", "recovery": [], "spent": 0 },
-        "visibility": { "override": false, "replacementAbility": "" },
-        "sort": 10
+        "uses": { "spent": 0, "recovery": [] },
+        "visibility": { "level": { "min": null, "max": null } },
+        "sort": 0,
+        "img": ""
       }
     }
   },
-  "flags": {
-    "dnd5e": {
-      "riders": { "activity": ["sraexattack00001"] }
-    }
-  },
+  "flags": {},
   "effects": [],
   "folder": null,
   "sort": 0,
   "ownership": { "default": 0 },
   "_stats": {
-    "compendiumSource": null, "duplicateSource": null,
-    "coreVersion": "13.351", "systemVersion": "5.3.0",
-    "createdTime": null, "modifiedTime": null, "lastModifiedBy": null
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "dnd5e",
+    "systemVersion": "5.3.0",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
   }
 }

@@ -207,11 +207,16 @@ export function convertAiFormat(ai) {
 
   // Weapon-only fields
   if (itemType === "weapon") {
+    const primaryAttack = (ai.activities ?? []).find(
+      (a) => a.type === "attack" && a.attackType === "melee weapon"
+    );
+    const baseDice = primaryAttack?.damage ? parseDice(primaryAttack.damage) : { number: 1, denomination: 6 };
+    const baseTypes = primaryAttack?.damageType ? [primaryAttack.damageType] : ["bludgeoning"];
     system.damage = {
       base: {
         custom: { enabled: false, formula: "" },
-        number: 1, denomination: 6, bonus: "",
-        types: ["bludgeoning"],
+        number: baseDice.number, denomination: baseDice.denomination, bonus: "",
+        types: baseTypes,
         scaling: { mode: "whole", number: 1 },
       },
     };

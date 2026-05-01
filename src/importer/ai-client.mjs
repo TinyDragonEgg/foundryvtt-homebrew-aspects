@@ -85,6 +85,24 @@ export async function generateItems(prompt, apiKey, model) {
 
   const data = await res.json();
   const text = data.content?.[0]?.text ?? "";
-  // Strip markdown code fences if the model added them despite instructions
-  return text.replace(/^```(?:json)?\s*/m, "").replace(/\s*```$/m, "").trim();
+
+  const usage = data.usage ?? {};
+  const inputTokens  = usage.input_tokens  ?? 0;
+  const outputTokens = usage.output_tokens ?? 0;
+
+  // Haiku 4.5 pricing: $0.80/M input, $4.00/M output (as of 2025)
+  // Sonnet 4.6 pricing: $3.00/M input, $15.00/M output
+  const prices = {
+    "claude-haiku-4-5-20251001": { in: 0.80, out: 4.00 },
+    "claude-sonnet-4-6":         { in: 3.00, out: 15.00 },
+  };
+  const p = prices[model] ?? prices["claude-haiku-4-5-20251001"];
+  const costUsd = (inputTokens * p.in + outputTokens * p.out) / 1_000_000;
+
+  return {
+    json: text.replace(/^```(?:json)?\s*/m, "").replace(/\s*```$/m, "").trim(),
+    inputTokens,
+    outputTokens,
+    costUsd,
+  };
 }

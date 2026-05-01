@@ -213,13 +213,13 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.render();
 
     try {
-      const json = await generateItems(prompt, apiKey, model);
+      const { json, inputTokens, outputTokens, costUsd } = await generateItems(prompt, apiKey, model);
 
       // Populate the import textarea and auto-parse, then switch to Import tab
       this._jsonDraft = json;
       this._parseFrom(json);
       this._activeTab = "import";
-      this._addLog(`Generated ${this._parsedDocs.length} item(s) via Claude.`);
+      this._addLog(`Generated ${this._parsedDocs.length} item(s) via Claude (${inputTokens} in / ${outputTokens} out tokens — $${costUsd.toFixed(5)})`);
     } catch (err) {
       log("warn", "Generation failed:", err);
       this._generateError = err.message;

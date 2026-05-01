@@ -385,6 +385,19 @@
   background: #3a0066;
 }
 
+.aov-generate-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.aov-generate-item-count {
+  font-weight: 600;
+  color: #1a5c2a;
+  min-width: 0;
+}
+
 .aov-generate-count-label {
   display: flex;
   align-items: center;

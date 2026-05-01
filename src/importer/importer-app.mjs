@@ -93,6 +93,7 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this._restoreTextarea();
     this._restoreGeneratePrompt();
     this._scrollLogToBottom();
+    this._bindGenerateCounter();
   }
 
   _restoreTextarea() {
@@ -110,6 +111,18 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
   _scrollLogToBottom() {
     const el = this.element.querySelector(".aov-importer-log-output");
     if (el) el.scrollTop = el.scrollHeight;
+  }
+
+  _bindGenerateCounter() {
+    const ta      = this.element.querySelector(".aov-generate-prompt");
+    const counter = this.element.querySelector(".aov-generate-item-count");
+    if (!ta || !counter) return;
+    const update = () => {
+      const paragraphs = ta.value.trim().split(/\n[ \t]*\n/).filter((p) => p.trim()).length;
+      counter.textContent = paragraphs > 1 ? `${paragraphs} items detected` : "";
+    };
+    ta.addEventListener("input", update);
+    update();
   }
 
   // ── Actions ───────────────────────────────────────────────────────────────
@@ -220,9 +233,20 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this._generateError = "";
     this.render();
 
-    const finalPrompt = count > 1
-      ? `Generate exactly ${count} items as a JSON array.\n\n${prompt}`
-      : prompt;
+    const paragraphs = prompt.split(/\n[ \t]*\n/).map((p) => p.trim()).filter(Boolean);
+    const isMulti = paragraphs.length > 1;
+
+    let finalPrompt;
+    if (isMulti) {
+      finalPrompt =
+        `Generate exactly ${paragraphs.length} items as a JSON array, one item per numbered description below. ` +
+        `Do not reorder or skip any.\n\n` +
+        paragraphs.map((p, i) => `${i + 1}. ${p}`).join("\n\n");
+    } else if (count > 1) {
+      finalPrompt = `Generate exactly ${count} distinct items as a JSON array.\n\n${prompt}`;
+    } else {
+      finalPrompt = prompt;
+    }
 
     try {
       const { json, inputTokens, outputTokens, costUsd } = await generateItems(finalPrompt, apiKey, model);

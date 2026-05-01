@@ -130,9 +130,13 @@
 
     <textarea
       class="aov-generate-prompt"
-      placeholder="Examples:&#10;• A rare shortsword that crackles with lightning and lets the wielder call down a bolt once per day&#10;• Three uncommon potions: one of healing, one of fire breath, one of invisibility&#10;• A legendary amulet that lets the wearer cast Wish once, then crumbles to dust"
+      placeholder="One item per paragraph — separate with a blank line:&#10;&#10;A rare shortsword that crackles with lightning and lets the wielder call down a bolt once per day&#10;&#10;An uncommon healing potion that restores 2d4+2 hit points&#10;&#10;A legendary amulet that lets the wearer cast Wish once, then crumbles to dust&#10;&#10;Or paste the full 25-prompt stress-test list all at once."
       spellcheck="true"
-      rows="8"></textarea>
+      rows="10"></textarea>
+    <div class="aov-generate-meta-row">
+      <span class="aov-generate-item-count"></span>
+      <span class="aov-importer-label">Separate items with a blank line · single item uses ×N count</span>
+    </div>
 
     {{#if generateError}}
     <div class="aov-generate-error">

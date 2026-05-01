@@ -19,7 +19,7 @@ SCHEMA (omit optional fields rather than setting null, unless noted):
   "consumableType": "potion|scroll|wand|rod|trinket|ammo|food|poison",
   "rarity": "common|uncommon|rare|very rare|legendary",
   "attunement": "required",
-  "description": "<p>Flavourful HTML. 1-2 sentences.</p>",
+  "description": "<p>HTML. 1 flavour sentence + 1 mechanical sentence (action cost, charges used, damage/DC/AoE, save if any).</p>",
   "magicalBonus": 1,
   "spellAttackBonus": 1,
   "imageHints": ["keyword1", "keyword2"],
@@ -28,11 +28,11 @@ SCHEMA (omit optional fields rather than setting null, unless noted):
 }
 
 ACTIVITY SCHEMAS:
-attack:  { "name":"string", "type":"attack", "attackType":"melee weapon|ranged weapon|melee spell|ranged spell", "damage":"1d8", "damageType":"fire", "range":5, "chargesCost":0 }
-save:    { "name":"string", "type":"save", "saveAbility":"str|dex|con|int|wis|cha", "saveDC":14, "damage":"2d6", "damageType":"fire", "onSave":"half|none", "chargesCost":0 }
-heal:    { "name":"string", "type":"heal", "healDice":"2d4", "healBonus":"2", "chargesCost":1 }
-utility: { "name":"string", "type":"utility", "chargesCost":0 }
-cast:    { "name":"string", "type":"cast", "spellName":"Fireball", "chargesCost":1 }
+attack:  { "name":"string", "type":"attack", "activationType":"action|bonus|reaction", "attackType":"melee weapon|ranged weapon|melee spell|ranged spell", "damage":"1d8", "damageType":"fire", "range":5, "chargesCost":0 }
+save:    { "name":"string", "type":"save", "activationType":"action|bonus|reaction", "saveAbility":"str|dex|con|int|wis|cha", "saveDC":14, "damage":"2d6", "damageType":"fire", "onSave":"half|none", "aoeType":"sphere|cone|cube|cylinder|line|radius", "aoeSize":20, "chargesCost":0 }
+heal:    { "name":"string", "type":"heal", "activationType":"action|bonus|reaction", "healDice":"2d4", "healBonus":"2", "chargesCost":1 }
+utility: { "name":"string", "type":"utility", "activationType":"action|bonus|reaction", "chargesCost":0 }
+cast:    { "name":"string", "type":"cast", "activationType":"action|bonus|reaction", "spellName":"Fireball", "chargesCost":1 }
 
 DAMAGE TYPES: force|necrotic|lightning|cold|fire|radiant|thunder|poison|acid|psychic|bludgeoning|piercing|slashing
 RECOVERY PERIODS: sr (short rest)|lr (long rest)|day
@@ -45,8 +45,11 @@ RULES:
 - omit "attunement" entirely if not required; omit "baseWeapon" for non-weapons; omit "consumableType" for non-consumables
 - omit "charges" entirely if the item has unlimited uses
 - omit "magicalBonus" and "spellAttackBonus" if zero
+- omit "activationType" when it is "action" (action is the default)
 - imageHints: 2-4 keywords ordered most-specific-first (object type, then material/theme), e.g. ["dagger","void","dark"] not ["dark","magic","cool"]
-- saveDC: use a number for a fixed DC, omit the field to use the holder's spell save DC`;
+- saveDC: use a number for a FIXED DC (e.g. 14); omit the field entirely to use the holder's spell save DC
+- AoE: any effect that hits multiple targets (explosion, burst, cone, cloud) MUST include aoeType and aoeSize in the save activity; single-target saves omit both
+- description MUST state: what action it takes, how many charges (if any), the damage/healing dice, DC, and AoE size so the player knows exactly how the item works mechanically`;
 
 /**
  * Call the Anthropic API to generate one or more AI-format items.

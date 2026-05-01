@@ -311,7 +311,12 @@ export function buildItemSaveActivity(id, name, ability, dcCalc, dcFormula, part
         prompt: true,
         override: true,
       },
-    } : {}),
+    } : {
+      target: {
+        ...base.target,
+        affects: { count: "1", type: "creature", choice: false, special: "" },
+      },
+    }),
     appliedEffects: [],
     visibility: { requireMagic: true, level: { min: null, max: null }, identifier: "" },
     name,

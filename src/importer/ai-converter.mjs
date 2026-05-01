@@ -39,6 +39,30 @@ const BASE_WEAPON_MAP = {
   "heavy crossbow": "martialR",
 };
 
+// Default weapon properties by baseWeapon (dnd5e 5.x property keys)
+const BASE_WEAPON_PROPERTIES = {
+  dagger:          ["fin", "lgt", "thr"],
+  quarterstaff:    ["ver"],
+  handaxe:         ["lgt", "thr"],
+  shortbow:        ["amm", "two"],
+  longbow:         ["amm", "hvy", "two"],
+  longsword:       ["ver"],
+  shortsword:      ["fin", "lgt"],
+  rapier:          ["fin"],
+  greatsword:      ["hvy", "two"],
+  "hand crossbow": ["amm", "lgt"],
+  "light crossbow":["amm", "two"],
+  "heavy crossbow":["amm", "hvy", "two"],
+};
+
+// Default attack range (feet) by baseWeapon — used when activity doesn't specify
+const BASE_WEAPON_RANGE = {
+  dagger: 5, quarterstaff: 5, handaxe: 5,
+  shortbow: 80, longbow: 150,
+  longsword: 5, shortsword: 5, rapier: 5, greatsword: 5,
+  "hand crossbow": 30, "light crossbow": 80, "heavy crossbow": 100,
+};
+
 /**
  * Convert an AI-format JSON object into a full Foundry Item document object.
  * Throws on validation errors.
@@ -65,6 +89,7 @@ export function convertAiFormat(ai) {
   for (const actDef of (ai.activities ?? [])) {
     const actId = activityId(position++);
     const chargesCost = actDef.chargesCost ?? 0;
+    const baseRange = BASE_WEAPON_RANGE[ai.baseWeapon] ?? 5;
 
     if (actDef.type === "attack") {
       const dice = actDef.damage ? parseDice(actDef.damage) : null;
@@ -72,12 +97,14 @@ export function convertAiFormat(ai) {
         ? [damagePart(dice.number, dice.denomination, actDef.damageType ?? "force", actDef.scaling ?? "none")]
         : [];
 
-      if (actDef.attackType === "melee weapon") {
+      if (actDef.attackType === "melee weapon" || actDef.attackType === "ranged weapon") {
+        const isRanged = actDef.attackType === "ranged weapon";
         activities[actId] = buildWeaponAttackActivity(
-          actId, actDef.name, "", "", actDef.range ?? 5, "weapon",
-          chargesCost > 0
-            ? { consumption: { targets: consumptionTargets(chargesCost), scaling: { allowed: false, max: "" }, spellSlot: true } }
-            : {}
+          actId, actDef.name, "", "", actDef.range ?? (isRanged ? baseRange : 5), "weapon",
+          {
+            ...(isRanged ? { attack: { ability: "", bonus: "", critical: { threshold: null }, flat: false, type: { value: "ranged", classification: "weapon" } } } : {}),
+            ...(chargesCost > 0 ? { consumption: { targets: consumptionTargets(chargesCost), scaling: { allowed: false, max: "" }, spellSlot: true } } : {}),
+          }
         );
       } else {
         const isMelee = actDef.attackType === "melee spell";
@@ -151,6 +178,12 @@ export function convertAiFormat(ai) {
     } else {
       throw new Error(`Unknown activity type "${actDef.type}" in AI document "${ai.name}"`);
     }
+
+    // Apply activationType override (bonus action, reaction, etc.)
+    if (actDef.activationType && actDef.activationType !== "action") {
+      activities[actId].activation.type = actDef.activationType;
+      if (actDef.activationType === "reaction") activities[actId].activation.value = null;
+    }
   }
 
   // ── Effects ─────────────────────────────────────────────────────────────────
@@ -208,7 +241,7 @@ export function convertAiFormat(ai) {
   // Weapon-only fields
   if (itemType === "weapon") {
     const primaryAttack = (ai.activities ?? []).find(
-      (a) => a.type === "attack" && a.attackType === "melee weapon"
+      (a) => a.type === "attack" && (a.attackType === "melee weapon" || a.attackType === "ranged weapon")
     );
     const baseDice = primaryAttack?.damage ? parseDice(primaryAttack.damage) : { number: 1, denomination: 6 };
     const baseTypes = primaryAttack?.damageType ? [primaryAttack.damageType] : ["bludgeoning"];
@@ -221,8 +254,12 @@ export function convertAiFormat(ai) {
       },
     };
     system.critical = { threshold: null, damage: "" };
-    system.type = { value: weaponType, subtype: "" };
-    system.properties = [];
+    system.type = {
+      value: weaponType,
+      baseItem: ai.baseWeapon ? ai.baseWeapon.replace(/\s+/g, "") : "",
+      subtype: "",
+    };
+    system.properties = BASE_WEAPON_PROPERTIES[ai.baseWeapon] ?? [];
     system.proficiencyMultiplier = 1;
     system.magicalBonus = ai.magicalBonus ?? null;
     system.enchantment = null;

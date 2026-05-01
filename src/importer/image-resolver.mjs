@@ -16,15 +16,15 @@ import { log, MODULE_ID } from "../logger.mjs";
  */
 const KEYWORD_MAP = [
   // ── Weapons ────────────────────────────────────────────────────────────────
-  { keywords: ["staff", "quarterstaff", "rod"], img: "icons/weapons/staves/staff-ornate-orange.webp" },
-  { keywords: ["sword", "longsword", "shortsword", "rapier", "scimitar", "blade", "katana"], img: "icons/weapons/swords/sword-ornate-purple.webp" },
+  { keywords: ["staff", "quarterstaff", "rod"], img: "icons/weapons/staves/staff-ornate-purple.webp" },
+  { keywords: ["sword", "longsword", "shortsword", "rapier", "scimitar", "blade", "katana"], img: "icons/weapons/swords/shortsword-guard-gold.webp" },
   { keywords: ["greatsword", "claymore", "zweihander"], img: "icons/weapons/swords/greatsword-crossguard-steel.webp" },
   { keywords: ["dagger", "knife", "dirk", "stiletto"], img: "icons/weapons/daggers/dagger-curved-blue.webp" },
-  { keywords: ["bow", "longbow", "shortbow", "crossbow"], img: "icons/weapons/bows/shortbow.webp" },
+  { keywords: ["bow", "longbow", "shortbow", "crossbow"], img: "icons/weapons/bows/shortbow-recurve.webp" },
   { keywords: ["axe", "handaxe", "battleaxe", "greataxe", "hatchet"], img: "icons/weapons/axes/axe-battle-black.webp" },
   { keywords: ["hammer", "maul", "warhammer", "mace", "flail"], img: "icons/weapons/hammers/hammer-double-steel.webp" },
   { keywords: ["spear", "lance", "halberd", "pike", "glaive", "polearm", "trident"], img: "icons/weapons/polearms/spear-flared-steel.webp" },
-  { keywords: ["wand"], img: "icons/weapons/wands/wand-tip-star.webp" },
+  { keywords: ["wand"], img: "icons/weapons/wands/wand-star-gold.webp" },
   { keywords: ["bomb", "grenade", "explosive"], img: "icons/weapons/thrown/bomb-fuse-black.webp" },
   { keywords: ["shuriken", "throwing"], img: "icons/weapons/thrown/shuriken-blue.webp" },
   // ── Equipment / armour (body slot order) ──────────────────────────────────

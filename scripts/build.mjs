@@ -13,9 +13,11 @@ import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 
+const PACKS_OUT = join(ROOT, "packs");
+
 const PACKS = [
-  { name: "spells", in: join(ROOT, "src", "spells"), out: join(ROOT, "packs", "spells") },
-  { name: "items",  in: join(ROOT, "src", "items"),  out: join(ROOT, "packs", "items") },
+  { name: "spells", in: join(ROOT, "src", "spells") },
+  { name: "items",  in: join(ROOT, "src", "items") },
 ];
 
 function run(cmd) {
@@ -23,13 +25,14 @@ function run(cmd) {
   execSync(cmd, { stdio: "inherit", cwd: ROOT });
 }
 
+mkdirSync(PACKS_OUT, { recursive: true });
+
 for (const pack of PACKS) {
   if (!existsSync(pack.in)) {
     console.log(`  (skip) ${pack.in} does not exist`);
     continue;
   }
-  mkdirSync(pack.out, { recursive: true });
-  run(`npx fvtt package pack -n "${pack.name}" --in "${pack.in}" --out "${pack.out}" --type Module`);
+  run(`npx fvtt package pack -n "${pack.name}" --in "${pack.in}" --out "${PACKS_OUT}" --type Module`);
 }
 
 console.log("\nBuild complete. Packs written to packs/");

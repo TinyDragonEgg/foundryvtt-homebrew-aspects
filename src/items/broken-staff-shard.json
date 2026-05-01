@@ -1,5 +1,6 @@
 {
   "_id": "bssexample000001",
+  "_key": "!items!bssexample000001",
   "name": "Broken Staff Shard",
   "type": "weapon",
   "img": "icons/weapons/staves/staff-simple-brown.webp",
@@ -212,6 +213,7 @@
   "effects": [
     {
       "_id": "bssspellbonus001",
+      "_key": "!items.effects!bssexample000001.bssspellbonus001",
       "name": "Spell Attack Bonus +2",
       "img": "icons/magic/symbols/runes-star-orange.webp",
       "type": "base",

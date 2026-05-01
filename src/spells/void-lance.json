@@ -1,5 +1,6 @@
 {
   "_id": "vlanceexample001",
+  "_key": "!items!vlanceexample001",
   "name": "Void Lance",
   "type": "spell",
   "img": "icons/magic/unholy/projectiles-shadow-purple.webp",

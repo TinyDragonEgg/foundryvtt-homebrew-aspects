@@ -53,7 +53,10 @@ jobs:
       - name: Create release zip
         run: |
           zip -r "${{ steps.vars.outputs.zip }}" . \
-            --exclude "src/*" \
+            --exclude "src/spells/*" \
+            --exclude "src/items/*" \
+            --exclude "src/fixtures/*" \
+            --exclude "src/schemas/*" \
             --exclude "scripts/*" \
             --exclude ".github/*" \
             --exclude "node_modules/*" \

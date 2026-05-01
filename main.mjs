@@ -1,7 +1,7 @@
-import { log, MODULE_ID } from "../src/logger.mjs";
-import { checkCompatibility } from "../src/compatibility.mjs";
-import { ImporterApp } from "../src/importer/importer-app.mjs";
-import { registerSheetExportHook } from "../src/hooks/sheet-export.mjs";
+import { log, MODULE_ID } from "./src/logger.mjs";
+import { checkCompatibility } from "./src/compatibility.mjs";
+import { ImporterApp } from "./src/importer/importer-app.mjs";
+import { registerSheetExportHook } from "./src/hooks/sheet-export.mjs";
 
 Hooks.once("init", () => {
   if (!game.user.isGM) return;

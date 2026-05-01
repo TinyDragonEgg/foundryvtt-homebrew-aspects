@@ -13,7 +13,7 @@
       "url": "https://github.com/TinyDragonEgg"
     }
   ],
-  "esmodules": ["scripts/main.mjs"],
+  "esmodules": ["main.mjs"],
   "styles": ["styles/importer.css"],
   "languages": [],
   "packs": [

@@ -23,6 +23,22 @@ Hooks.once("ready", () => {
   }
 });
 
+// Add an importer button to the Items directory header
+Hooks.on("renderItemDirectory", (_app, html) => {
+  if (!game.user.isGM) return;
+  const el = html instanceof HTMLElement ? html : html?.[0];
+  if (!el) return;
+  const actions = el.querySelector(".header-actions");
+  if (!actions || actions.querySelector(".aov-open-importer-btn")) return;
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "aov-open-importer-btn";
+  btn.title = "Aspects of Verun — Item Importer";
+  btn.innerHTML = '<i class="fas fa-file-import"></i>';
+  btn.addEventListener("click", () => new ImporterApp().render(true));
+  actions.appendChild(btn);
+});
+
 function registerSettings() {
   // Settings menu — opens the ImporterApp window
   game.settings.registerMenu(MODULE_ID, "importerMenu", {
@@ -103,6 +119,30 @@ function registerSettings() {
     restricted: true,
     type: Boolean,
     default: true,
+  });
+
+  game.settings.register(MODULE_ID, "claudeApiKey", {
+    name: "Claude API Key",
+    hint: "Anthropic API key used by the Generate tab to create items with Claude. Stored in world settings — only share with trusted admins.",
+    scope: "world",
+    config: true,
+    restricted: true,
+    type: String,
+    default: "",
+  });
+
+  game.settings.register(MODULE_ID, "claudeModel", {
+    name: "Claude Model",
+    hint: "Model used for item generation. Haiku is fast and cheap; Sonnet is more creative.",
+    scope: "world",
+    config: true,
+    restricted: true,
+    type: String,
+    choices: {
+      "claude-haiku-4-5-20251001": "Haiku 4.5 (fast, cheap)",
+      "claude-sonnet-4-6": "Sonnet 4.6 (smarter, slower)",
+    },
+    default: "claude-haiku-4-5-20251001",
   });
 
   game.settings.register(MODULE_ID, "spellCompendium", {

@@ -9,6 +9,11 @@
       <i class="fas fa-file-import"></i> Import
     </button>
     <button type="button"
+      class="aov-importer-tab {{#if (eq activeTab 'generate')}}active{{/if}}"
+      data-action="switchTab" data-tab="generate" role="tab">
+      <i class="fas fa-wand-magic-sparkles"></i> Generate
+    </button>
+    <button type="button"
       class="aov-importer-tab {{#if (eq activeTab 'log')}}active{{/if}}"
       data-action="switchTab" data-tab="log" role="tab">
       <i class="fas fa-list-ul"></i> Log
@@ -106,6 +111,55 @@
   </section>
   {{/if}}
 
+  {{!-- ── GENERATE TAB ── --}}
+  {{#if (eq activeTab 'generate')}}
+  <section class="aov-importer-panel" role="tabpanel">
+
+    {{#unless hasApiKey}}
+    <div class="aov-generate-warning">
+      <i class="fas fa-exclamation-triangle"></i>
+      No API key set. Add your Anthropic API key in
+      <strong>Module Settings → Aspects of Verun → Claude API Key</strong>.
+    </div>
+    {{/unless}}
+
+    <label class="aov-generate-label">
+      Describe the item(s) you want:
+      <span class="aov-generate-model-hint">using {{modelLabel}}</span>
+    </label>
+
+    <textarea
+      class="aov-generate-prompt"
+      placeholder="Examples:&#10;• A rare shortsword that crackles with lightning and lets the wielder call down a bolt once per day&#10;• Three uncommon potions: one of healing, one of fire breath, one of invisibility&#10;• A legendary amulet that lets the wearer cast Wish once, then crumbles to dust"
+      spellcheck="true"
+      rows="8"></textarea>
+
+    {{#if generateError}}
+    <div class="aov-generate-error">
+      <i class="fas fa-times-circle"></i> {{generateError}}
+    </div>
+    {{/if}}
+
+    <div class="aov-generate-row">
+      <button type="button"
+        class="aov-importer-btn aov-btn-generate {{#if generating}}aov-btn-disabled{{/if}}"
+        data-action="generate"
+        {{#if generating}}disabled{{/if}}
+        {{#unless hasApiKey}}disabled{{/unless}}>
+        {{#if generating}}
+          <i class="fas fa-spinner fa-spin"></i> Generating…
+        {{else}}
+          <i class="fas fa-wand-magic-sparkles"></i> Generate with Claude
+        {{/if}}
+      </button>
+      <span class="aov-importer-label">
+        Items will appear on the Import tab ready to review.
+      </span>
+    </div>
+
+  </section>
+  {{/if}}
+
   {{!-- ── LOG TAB ── --}}
   {{#if (eq activeTab 'log')}}
   <section class="aov-importer-panel" role="tabpanel">
@@ -124,16 +178,18 @@
   <section class="aov-importer-panel aov-importer-settings-panel" role="tabpanel">
     <p class="aov-importer-settings-hint">
       These settings mirror the module settings in the Foundry settings menu.
-      Changes here take effect immediately for the current import session.
     </p>
     <dl class="aov-importer-settings-list">
       <dt>Auto-resolve images</dt>
-      <dd>{{#if settings.autoResolveImages}}Enabled{{else}}Disabled{{/if}}
-        — change in <em>Module Settings → Aspects of Verun</em></dd>
+      <dd>{{#if settings.autoResolveImages}}Enabled{{else}}Disabled{{/if}}</dd>
       <dt>Auto-create folders</dt>
       <dd>{{#if settings.autoCreateFolders}}Enabled{{else}}Disabled{{/if}}</dd>
       <dt>Backup on overwrite</dt>
       <dd>{{#if settings.overwrite}}Enabled{{else}}Disabled{{/if}}</dd>
+      <dt>Claude model</dt>
+      <dd>{{modelLabel}}</dd>
+      <dt>Claude API key</dt>
+      <dd>{{#if hasApiKey}}Set{{else}}<strong style="color:#8b1a1a">Not set</strong>{{/if}}</dd>
     </dl>
     <p class="aov-importer-settings-hint">
       Open <strong>Game Settings → Module Settings → Aspects of Verun</strong> to change these.

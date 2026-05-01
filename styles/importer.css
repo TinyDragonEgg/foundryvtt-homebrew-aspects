@@ -318,6 +318,97 @@
   color: var(--color-text-secondary, #6b6860);
 }
 
+/* ── Items directory toolbar button ──────────────────────────────────────────── */
+
+.aov-open-importer-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-secondary, #6b6860);
+  font-size: 14px;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.aov-open-importer-btn:hover {
+  color: var(--dnd5e-color-gold, #4b0082);
+}
+
+/* ── Generate tab ─────────────────────────────────────────────────────────────── */
+
+.aov-generate-label {
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.aov-generate-model-hint {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--color-text-secondary, #6b6860);
+}
+
+.aov-generate-prompt {
+  width: 100%;
+  font-family: var(--font-primary, sans-serif);
+  font-size: 12px;
+  line-height: 1.5;
+  border: 1px solid var(--color-border-dark, #7a7971);
+  border-radius: 3px;
+  padding: 8px 10px;
+  resize: vertical;
+  background: #fafaf8;
+  color: #191813;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.aov-generate-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.aov-btn-generate {
+  background: #4b0082;
+  color: #fff;
+  border-color: #4b0082;
+  font-size: 13px;
+  padding: 7px 16px;
+  white-space: nowrap;
+}
+
+.aov-btn-generate:hover {
+  background: #3a0066;
+}
+
+.aov-generate-warning {
+  background: #fff8e6;
+  border: 1px solid #d4a017;
+  border-radius: 3px;
+  padding: 8px 10px;
+  font-size: 12px;
+  color: #7a5800;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.aov-generate-error {
+  background: #fff0f0;
+  border: 1px solid #e08080;
+  border-radius: 3px;
+  padding: 8px 10px;
+  font-size: 12px;
+  color: #8b1a1a;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
 /* ── Sheet export button ──────────────────────────────────────────────────────── */
 
 .aov-export-btn {

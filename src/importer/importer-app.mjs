@@ -1,12 +1,11 @@
 /**
  * Aspects of Verun — Importer ApplicationV2.
- * Main import UI window. Uses ApplicationV2 + HandlebarsApplicationMixin.
- * IMPORTANT: this class is the type passed to game.settings.registerMenu — it
- * must be an actual ApplicationV2 subclass, NOT a lazy proxy.
+ * Tabs: Import (paste/load JSON) | Generate (Claude API) | Log | Settings
  */
 
 import { MODULE_ID, log } from "../logger.mjs";
 import { parseImportText, bulkImport, summariseResults } from "./import-core.mjs";
+import { generateItems } from "./ai-client.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -22,13 +21,14 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
       resizable: true,
       minimizable: true,
     },
-    position: { width: 660, height: 580 },
+    position: { width: 680, height: 600 },
     actions: {
-      switchTab: ImporterApp._onSwitchTab,
-      parseJson: ImporterApp._onParseJson,
-      startImport: ImporterApp._onStartImport,
-      clearLog: ImporterApp._onClearLog,
+      switchTab:    ImporterApp._onSwitchTab,
+      parseJson:    ImporterApp._onParseJson,
+      startImport:  ImporterApp._onStartImport,
+      clearLog:     ImporterApp._onClearLog,
       openFilePicker: ImporterApp._onOpenFilePicker,
+      generate:     ImporterApp._onGenerate,
     },
   };
 
@@ -46,23 +46,37 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
   _importing = false;
   _importProgress = 0;
 
+  _generatePrompt = "";
+  _generating = false;
+  _generateError = "";
+
   // ── Context ────────────────────────────────────────────────────────────────
 
   /** @override */
   async _prepareContext(options) {
-    const overwrite = game.settings.get(MODULE_ID, "showPreviewDialog"); // reuse as "confirm before import"
+    const apiKey = game.settings.get(MODULE_ID, "claudeApiKey") ?? "";
+    const model  = game.settings.get(MODULE_ID, "claudeModel") ?? "claude-haiku-4-5-20251001";
+    const modelLabel = {
+      "claude-haiku-4-5-20251001": "Haiku 4.5",
+      "claude-sonnet-4-6": "Sonnet 4.6",
+    }[model] ?? model;
+
     return {
-      activeTab: this._activeTab,
-      parsedDocs: this._parsedDocs,
-      parseErrors: this._parseErrors,
-      logLines: this._logLines,
-      importing: this._importing,
-      importProgress: this._importProgress,
-      docCount: this._parsedDocs.length,
-      hasErrors: this._parseErrors.length > 0,
-      hasDocs: this._parsedDocs.length > 0,
+      activeTab:       this._activeTab,
+      parsedDocs:      this._parsedDocs,
+      parseErrors:     this._parseErrors,
+      logLines:        this._logLines,
+      importing:       this._importing,
+      importProgress:  this._importProgress,
+      docCount:        this._parsedDocs.length,
+      hasErrors:       this._parseErrors.length > 0,
+      hasDocs:         this._parsedDocs.length > 0,
+      generating:      this._generating,
+      generateError:   this._generateError,
+      hasApiKey:       !!apiKey,
+      modelLabel,
       settings: {
-        overwrite: game.settings.get(MODULE_ID, "backupOnOverwrite"),
+        overwrite:         game.settings.get(MODULE_ID, "backupOnOverwrite"),
         autoResolveImages: game.settings.get(MODULE_ID, "autoResolveImages"),
         autoCreateFolders: game.settings.get(MODULE_ID, "autoCreateFolders"),
       },
@@ -75,6 +89,7 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
   _onRender(context, options) {
     super._onRender?.(context, options);
     this._restoreTextarea();
+    this._restoreGeneratePrompt();
     this._scrollLogToBottom();
   }
 
@@ -83,9 +98,14 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
     if (ta && this._jsonDraft) ta.value = this._jsonDraft;
   }
 
+  _restoreGeneratePrompt() {
+    const ta = this.element.querySelector(".aov-generate-prompt");
+    if (ta && this._generatePrompt) ta.value = this._generatePrompt;
+  }
+
   _scrollLogToBottom() {
-    const log = this.element.querySelector(".aov-importer-log-output");
-    if (log) log.scrollTop = log.scrollHeight;
+    const el = this.element.querySelector(".aov-importer-log-output");
+    if (el) el.scrollTop = el.scrollHeight;
   }
 
   // ── Actions ───────────────────────────────────────────────────────────────
@@ -101,20 +121,7 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
     const ta = this.element.querySelector(".aov-importer-json-input");
     const text = ta?.value?.trim() ?? "";
     this._jsonDraft = text;
-
-    if (!text) {
-      this._parsedDocs = [];
-      this._parseErrors = ["Paste JSON above and click Parse."];
-      return this.render();
-    }
-
-    const { docs, errors } = parseImportText(text);
-    this._parsedDocs = docs;
-    this._parseErrors = errors;
-
-    if (docs.length) {
-      this._addLog(`Parsed ${docs.length} item(s). ${errors.length ? errors.length + " error(s)." : "Ready to import."}`);
-    }
+    this._parseFrom(text);
     this.render();
   }
 
@@ -130,7 +137,7 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
     }
 
     const overwrite = this.element.querySelector(".aov-overwrite-check")?.checked ?? false;
-    const backup = game.settings.get(MODULE_ID, "backupOnOverwrite");
+    const backup    = game.settings.get(MODULE_ID, "backupOnOverwrite");
 
     this._importing = true;
     this._importProgress = 0;
@@ -153,20 +160,14 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
     const { ok, skipped, errorCount, errors } = summariseResults(results);
     this._addLog(`─── Done: ${ok} created, ${skipped} skipped, ${errorCount} failed ───`);
-    for (const e of errors) {
-      this._addLog(`  ERROR: "${e.name}" — ${e.reason}`);
-    }
+    for (const e of errors) this._addLog(`  ERROR: "${e.name}" — ${e.reason}`);
 
     this._importing = false;
     this._importProgress = 100;
     this.render();
 
-    if (ok > 0) {
-      ui.notifications.info(`Aspects of Verun: imported ${ok} item(s).`);
-    }
-    if (errorCount > 0) {
-      ui.notifications.warn(`Aspects of Verun: ${errorCount} item(s) failed — check the Log tab.`);
-    }
+    if (ok > 0)         ui.notifications.info(`Aspects of Verun: imported ${ok} item(s).`);
+    if (errorCount > 0) ui.notifications.warn(`Aspects of Verun: ${errorCount} item(s) failed — check the Log tab.`);
   }
 
   static _onClearLog(event, target) {
@@ -180,8 +181,7 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
       extensions: [".json"],
       callback: async (path) => {
         try {
-          const response = await fetch(path);
-          const text = await response.text();
+          const text = await fetch(path).then((r) => r.text());
           this._jsonDraft = text;
           const ta = this.element.querySelector(".aov-importer-json-input");
           if (ta) ta.value = text;
@@ -193,12 +193,61 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
     }).browse("data", "");
   }
 
+  static async _onGenerate(event, target) {
+    if (this._generating) return;
+
+    const ta = this.element.querySelector(".aov-generate-prompt");
+    const prompt = ta?.value?.trim() ?? "";
+    this._generatePrompt = prompt;
+
+    if (!prompt) {
+      this._generateError = "Describe the item(s) you want to generate.";
+      return this.render();
+    }
+
+    const apiKey = game.settings.get(MODULE_ID, "claudeApiKey") ?? "";
+    const model  = game.settings.get(MODULE_ID, "claudeModel") ?? "claude-haiku-4-5-20251001";
+
+    this._generating = true;
+    this._generateError = "";
+    this.render();
+
+    try {
+      const json = await generateItems(prompt, apiKey, model);
+
+      // Populate the import textarea and auto-parse, then switch to Import tab
+      this._jsonDraft = json;
+      this._parseFrom(json);
+      this._activeTab = "import";
+      this._addLog(`Generated ${this._parsedDocs.length} item(s) via Claude.`);
+    } catch (err) {
+      log("warn", "Generation failed:", err);
+      this._generateError = err.message;
+    } finally {
+      this._generating = false;
+      this.render();
+    }
+  }
+
   // ── Helpers ────────────────────────────────────────────────────────────────
+
+  _parseFrom(text) {
+    if (!text) {
+      this._parsedDocs = [];
+      this._parseErrors = ["Paste JSON above and click Parse."];
+      return;
+    }
+    const { docs, errors } = parseImportText(text);
+    this._parsedDocs  = docs;
+    this._parseErrors = errors;
+    if (docs.length) {
+      this._addLog(`Parsed ${docs.length} item(s). ${errors.length ? errors.length + " error(s)." : "Ready to import."}`);
+    }
+  }
 
   _addLog(msg) {
     const ts = new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
     this._logLines.push(`[${ts}] ${msg}`);
-    // Keep log bounded
     if (this._logLines.length > 500) this._logLines.splice(0, this._logLines.length - 500);
   }
 }

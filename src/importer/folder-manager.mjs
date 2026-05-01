@@ -68,6 +68,9 @@ export function inferSubFolder(itemType, rarity) {
   if (itemType === "equipment") return "Equipment";
   if (itemType === "consumable") return "Consumables";
   if (itemType === "loot") return "Loot";
+  if (itemType === "feat") return "Features";
+  if (itemType === "tool") return "Tools";
+  if (itemType === "container") return "Containers";
   return null;
 }
 

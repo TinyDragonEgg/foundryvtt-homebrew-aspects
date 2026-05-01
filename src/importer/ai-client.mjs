@@ -39,9 +39,11 @@ RECOVERY PERIODS: sr (short rest)|lr (long rest)|day
 
 RULES:
 - weapons: always include at least one attack activity; first "melee weapon" or "ranged weapon" activity defines the base damage die and type
-- consumables: include charges (max≥1) and at least one activity
+- consumables: anything that does something when used (potions, charged trinkets, single-use crystals, scrolls); include charges (max≥1) and at least one activity; "destroys itself on use" = charges: { max: 1 } with no recovery
+- loot: ONLY passive treasure with no mechanics (raw gems, coins, harvested materials); if it has any "use as an action" or active effect, it is a consumable NOT loot
 - features: itemCategory "feature", typically utility activity, no charges unless it recharges
 - rarity guides power: common=minor, uncommon=useful, rare=significant, very rare=powerful, legendary=exceptional
+- rarity spelling: use exactly "very rare" (two words) for veryRare items
 - omit "attunement" entirely if not required; omit "baseWeapon" for non-weapons; omit "consumableType" for non-consumables
 - omit "charges" entirely if the item has unlimited uses
 - omit "magicalBonus" and "spellAttackBonus" if zero

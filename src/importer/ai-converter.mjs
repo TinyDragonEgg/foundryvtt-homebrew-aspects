@@ -23,6 +23,16 @@ const CATEGORY_TYPE_MAP = {
   feature: "feat",
 };
 
+// Normalise AI rarity strings → dnd5e rarity keys
+const RARITY_MAP = {
+  "common":    "common",
+  "uncommon":  "uncommon",
+  "rare":      "rare",
+  "very rare": "veryRare",
+  "veryrare":  "veryRare",
+  "legendary": "legendary",
+};
+
 // Maps AI baseWeapon strings to dnd5e weapon type values
 const BASE_WEAPON_MAP = {
   quarterstaff: "simpleM",
@@ -219,7 +229,7 @@ export function convertAiFormat(ai) {
     price: { value: 0, denomination: "gp" },
     attunement: ai.attunement ? "required" : "",
     equipped: false,
-    rarity: ai.rarity ?? "common",
+    rarity: RARITY_MAP[(ai.rarity ?? "common").toLowerCase()] ?? "common",
     identified: true,
     activation: { type: "action", value: 1, condition: "" },
     duration: { value: "", units: "", special: "" },

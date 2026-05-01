@@ -14,8 +14,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 
 const PACKS = [
-  { in: join(ROOT, "src", "spells"), out: join(ROOT, "packs", "spells"), type: "Item" },
-  { in: join(ROOT, "src", "items"),  out: join(ROOT, "packs", "items"),  type: "Item" },
+  { name: "spells", in: join(ROOT, "src", "spells"), out: join(ROOT, "packs", "spells") },
+  { name: "items",  in: join(ROOT, "src", "items"),  out: join(ROOT, "packs", "items") },
 ];
 
 function run(cmd) {
@@ -29,7 +29,7 @@ for (const pack of PACKS) {
     continue;
   }
   mkdirSync(pack.out, { recursive: true });
-  run(`npx fvtt package pack --in "${pack.in}" --out "${pack.out}" --type ${pack.type}`);
+  run(`npx fvtt package pack -n "${pack.name}" --in "${pack.in}" --out "${pack.out}" --type Module`);
 }
 
 console.log("\nBuild complete. Packs written to packs/");

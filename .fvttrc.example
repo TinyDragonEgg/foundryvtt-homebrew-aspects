@@ -1,4 +1,5 @@
 {
   "dataPath": "C:/Users/yahya/AppData/Local/FoundryVTT/Data",
-  "installPath": "C:/Program Files/FoundryVTT"
+  "installPath": "C:/Program Files/FoundryVTT",
+  "devIconsRoot": "C:/Users/yahya/Desktop/Development"
 }

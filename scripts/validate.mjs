@@ -4,13 +4,30 @@
  * Checks: ID format, rider references, cast activity spell hints, consumption targets.
  */
 
-import { readFile, readdir } from "fs/promises";
+import { readFile, readdir, access } from "fs/promises";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const DIRS = [join(ROOT, "src", "spells"), join(ROOT, "src", "items")];
+
+// Load devIconsRoot from .fvttrc if present — used to validate img paths.
+let devIconsRoot = null;
+try {
+  const rc = JSON.parse(await readFile(join(ROOT, ".fvttrc"), "utf8"));
+  if (rc.devIconsRoot) devIconsRoot = rc.devIconsRoot.replace(/\//g, "\\").replace(/\\/g, "/");
+} catch { /* no .fvttrc — image validation skipped */ }
+
+async function imageExists(imgPath) {
+  if (!devIconsRoot || !imgPath) return true; // can't validate — skip
+  try {
+    await access(join(devIconsRoot, imgPath));
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 const VALID_SCALING_MODES = ["", "whole", "half", "amount"];
 
@@ -44,7 +61,7 @@ function collectActivities(doc) {
 
 // ─── VALIDATE ONE FILE ────────────────────────────────────────────────────────
 
-function validateDoc(doc, filepath) {
+async function validateDoc(doc, filepath) {
   const errors = [];
   const relPath = filepath.replace(ROOT + "/", "").replace(ROOT + "\\", "");
 
@@ -53,7 +70,15 @@ function validateDoc(doc, filepath) {
     errors.push(idError(doc._id ?? "(missing)", "document _id"));
   }
 
-  // 2. Activities
+  // 2. Image path
+  if (doc.img && !(await imageExists(doc.img))) {
+    errors.push(
+      `img "${doc.img}" — file not found under devIconsRoot\n` +
+      `  Fix: update img to a path that exists in the icons folder`
+    );
+  }
+
+  // 3. Activities
   const activities = collectActivities(doc);
   const activityIds = new Set();
 
@@ -108,7 +133,7 @@ function validateDoc(doc, filepath) {
     }
   }
 
-  // 3. dnd5e.riders.activity references
+  // 4. dnd5e.riders.activity references
   const riderRefs = doc?.flags?.dnd5e?.riders?.activity ?? [];
   for (const ref of riderRefs) {
     if (!activityIds.has(ref)) {
@@ -121,7 +146,7 @@ function validateDoc(doc, filepath) {
     }
   }
 
-  // 4. Effects _id
+  // 5. Effects _id
   const effects = doc?.effects ?? [];
   for (const eff of effects) {
     if (!isValidId(eff._id)) {
@@ -157,7 +182,7 @@ async function validateDir(dir) {
       continue;
     }
 
-    const errors = validateDoc(doc, filepath);
+    const errors = await validateDoc(doc, filepath);
     const rel = filepath.replace(ROOT + "\\", "").replace(ROOT + "/", "");
 
     if (errors.length === 0) {

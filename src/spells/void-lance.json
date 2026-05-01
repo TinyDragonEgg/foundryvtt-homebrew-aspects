@@ -3,7 +3,7 @@
   "_key": "!items!vlanceexample001",
   "name": "Void Lance",
   "type": "spell",
-  "img": "icons/magic/unholy/projectiles-shadow-purple.webp",
+  "img": "icons/magic/unholy/projectile-fireball-agile-purple.webp",
   "system": {
     "description": {
       "value": "<p>You hurl a lance of consuming void at a creature you can see within range. Make a ranged spell attack. On a hit, the target takes 2d8 necrotic damage and cannot regain hit points until the start of your next turn.</p><p><strong>At Higher Levels.</strong> When you cast this spell using a spell slot of 2nd level or higher, the damage increases by 1d8 for each slot level above 1st.</p>",

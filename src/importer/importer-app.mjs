@@ -5,6 +5,7 @@
 
 import { MODULE_ID, log } from "../logger.mjs";
 import { parseImportText, bulkImport, summariseResults } from "./import-core.mjs";
+import { validateAndFixImages } from "./image-resolver.mjs";
 import { generateItems } from "./ai-client.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -29,6 +30,7 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
       clearLog:     ImporterApp._onClearLog,
       openFilePicker: ImporterApp._onOpenFilePicker,
       generate:     ImporterApp._onGenerate,
+      openSettings: ImporterApp._onOpenSettings,
     },
   };
 
@@ -179,12 +181,27 @@ export class ImporterApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this._addLog(`─── Done: ${ok} created, ${skipped} skipped, ${errorCount} failed ───`);
     for (const e of errors) this._addLog(`  ERROR: "${e.name}" — ${e.reason}`);
 
+    if (ok > 0) {
+      this._addLog("─── Validating images… ───");
+      this.render();
+      const fixed = await validateAndFixImages(results, (msg) => {
+        this._addLog(msg);
+        this._scrollLogToBottom();
+      });
+      if (fixed === 0) this._addLog("  All images OK.");
+      else this._addLog(`  Fixed ${fixed} image(s).`);
+    }
+
     this._importing = false;
     this._importProgress = 100;
     this.render();
 
     if (ok > 0)         ui.notifications.info(`Aspects of Verun: imported ${ok} item(s).`);
     if (errorCount > 0) ui.notifications.warn(`Aspects of Verun: ${errorCount} item(s) failed — check the Log tab.`);
+  }
+
+  static _onOpenSettings() {
+    game.settings.sheet.render(true);
   }
 
   static _onClearLog(event, target) {

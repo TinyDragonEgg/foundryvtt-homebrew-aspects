@@ -139,6 +139,54 @@ export async function resolveImage(itemName, hints = [], itemType = "") {
   return DEFAULT_IMG;
 }
 
+/**
+ * After a bulk import, HEAD-check every successfully created item's image.
+ * If the path returns a non-OK response, try a filesystem search for a replacement.
+ * If no replacement is found, reset to the default icon.
+ *
+ * @param {import("./import-core.mjs").ImportResult[]} results
+ * @param {Function} onLog  Callback (msg: string) for progress messages
+ * @returns {Promise<number>}  Number of items whose image was fixed
+ */
+export async function validateAndFixImages(results, onLog = () => {}) {
+  const okResults = results.filter((r) => r.status === "ok" && r.id);
+  if (!okResults.length) return 0;
+
+  let fixed = 0;
+  for (const result of okResults) {
+    const item = game.items.get(result.id);
+    if (!item || !item.img || item.img === DEFAULT_IMG) continue;
+
+    if (await _imageExists(item.img)) continue;
+
+    const hints = item.flags?.[MODULE_ID]?.imageHints ?? [];
+    const nameWords = item.name.toLowerCase().split(/[\s\-_]+/).filter((w) => w.length > 2);
+    const allKeywords = [...hints.map((h) => h.toLowerCase()), ...nameWords];
+
+    let newImg = null;
+    try { newImg = await _searchFilesystem(allKeywords); } catch { /* ignore */ }
+
+    if (newImg) {
+      await item.update({ img: newImg });
+      onLog(`  Fixed broken image for "${item.name}": ${newImg}`);
+    } else {
+      await item.update({ img: DEFAULT_IMG });
+      onLog(`  ⚠ Broken image on "${item.name}" — reset to default (${item.img})`);
+    }
+    fixed++;
+  }
+  return fixed;
+}
+
+async function _imageExists(path) {
+  try {
+    const res = await fetch(path, { method: "HEAD" });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 async function _searchFilesystem(keywords) {
   const pathsStr = game.settings.get(MODULE_ID, "imageSearchPaths") ?? "";
   const dirs = pathsStr.split(",").map((p) => p.trim()).filter(Boolean);

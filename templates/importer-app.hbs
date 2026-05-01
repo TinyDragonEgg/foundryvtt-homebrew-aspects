@@ -198,9 +198,10 @@
       <dt>Claude API key</dt>
       <dd>{{#if hasApiKey}}Set{{else}}<strong style="color:#8b1a1a">Not set</strong>{{/if}}</dd>
     </dl>
-    <p class="aov-importer-settings-hint">
-      Open <strong>Game Settings → Module Settings → Aspects of Verun</strong> to change these.
-    </p>
+    <button type="button" class="aov-importer-btn" data-action="openSettings"
+      style="align-self: flex-start;">
+      <i class="fas fa-cog"></i> Open Game Settings
+    </button>
   </section>
   {{/if}}
 

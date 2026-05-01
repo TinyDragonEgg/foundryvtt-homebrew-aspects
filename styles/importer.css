@@ -1,16 +1,35 @@
 /* Aspects of Verun — Importer styles
    All selectors scoped to .aov-importer-window or .aov-export-* / .aov-importer-*
-   Uses dnd5e CSS custom properties where available. */
+   Explicit color/background on every element — never rely on inheritance from
+   Foundry's theme for form inputs, because browsers apply system-default colors
+   (white text in dark-mode) that override CSS inheritance. */
 
-/* ── Window chrome ─────────────────────────────────────────────────────────── */
+/* ── CSS custom properties (local defaults) ─────────────────────────────────── */
 
 .aov-importer-window {
+  --aov-text:        #191813;
+  --aov-text-dim:    #5a5650;
+  --aov-bg:          #f0ece3;
+  --aov-bg-input:    #fafaf8;
+  --aov-bg-dark:     #1a1a1a;
+  --aov-border:      #9a9589;
+  --aov-purple:      #4b0082;
+  --aov-green:       #1a5c2a;
+  --aov-red-bg:      #fff0f0;
+  --aov-red-border:  #e08080;
+  --aov-red-text:    #8b1a1a;
+  --aov-amber-bg:    #fff8e6;
+  --aov-amber-border:#d4a017;
+  --aov-amber-text:  #7a5800;
   font-family: var(--font-primary, sans-serif);
   font-size: 13px;
-  color: var(--color-text-primary, #191813);
+  color: var(--aov-text);
 }
 
+/* ── Window chrome ──────────────────────────────────────────────────────────── */
+
 .aov-importer-window .window-content {
+  background: var(--aov-bg);
   padding: 0;
   overflow: hidden;
   display: flex;
@@ -33,15 +52,17 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  background: var(--aov-bg);
+  color: var(--aov-text);
 }
 
-/* ── Tabs ───────────────────────────────────────────────────────────────────── */
+/* ── Tabs ────────────────────────────────────────────────────────────────────── */
 
 .aov-importer-tabs {
   display: flex;
   gap: 0;
-  border-bottom: 2px solid var(--color-border-dark, #7a7971);
-  background: var(--color-bg-option, #f0ece3);
+  border-bottom: 2px solid var(--aov-border);
+  background: #e8e4da;
   flex-shrink: 0;
 }
 
@@ -54,7 +75,7 @@
   cursor: pointer;
   font-size: 12px;
   font-weight: 600;
-  color: var(--color-text-secondary, #6b6860);
+  color: var(--aov-text-dim);
   display: flex;
   align-items: center;
   gap: 5px;
@@ -62,23 +83,23 @@
 }
 
 .aov-importer-tab:hover {
-  color: var(--color-text-primary, #191813);
+  color: var(--aov-text);
 }
 
 .aov-importer-tab.active {
-  color: var(--dnd5e-color-gold, #4b0082);
-  border-bottom-color: var(--dnd5e-color-gold, #4b0082);
+  color: var(--aov-purple);
+  border-bottom-color: var(--aov-purple);
 }
 
 .aov-importer-badge {
-  background: var(--dnd5e-color-gold, #4b0082);
+  background: var(--aov-purple);
   color: #fff;
   border-radius: 8px;
   padding: 1px 5px;
   font-size: 10px;
 }
 
-/* ── Toolbar / row layouts ───────────────────────────────────────────────────── */
+/* ── Toolbar / row layouts ──────────────────────────────────────────────────── */
 
 .aov-importer-toolbar,
 .aov-importer-parse-row,
@@ -91,7 +112,7 @@
 }
 
 .aov-importer-label {
-  color: var(--color-text-secondary, #6b6860);
+  color: var(--aov-text-dim);
   font-size: 12px;
 }
 
@@ -102,10 +123,10 @@
   align-items: center;
   gap: 4px;
   padding: 5px 10px;
-  border: 1px solid var(--color-border-dark, #7a7971);
+  border: 1px solid var(--aov-border);
   border-radius: 3px;
-  background: var(--color-bg-btn, #f0ece3);
-  color: var(--color-text-primary, #191813);
+  background: #e8e4da;
+  color: var(--aov-text);
   font-size: 12px;
   cursor: pointer;
   white-space: nowrap;
@@ -113,13 +134,13 @@
 }
 
 .aov-importer-btn:hover {
-  background: var(--color-bg-btn-hover, #e0ddd5);
+  background: #d8d4ca;
 }
 
 .aov-btn-primary {
-  background: var(--dnd5e-color-gold, #4b0082);
+  background: var(--aov-purple);
   color: #fff;
-  border-color: var(--dnd5e-color-gold, #4b0082);
+  border-color: var(--aov-purple);
 }
 
 .aov-btn-primary:hover {
@@ -127,9 +148,9 @@
 }
 
 .aov-btn-import {
-  background: #1a5c2a;
+  background: var(--aov-green);
   color: #fff;
-  border-color: #1a5c2a;
+  border-color: var(--aov-green);
   font-size: 13px;
   padding: 6px 14px;
   margin-left: auto;
@@ -145,6 +166,7 @@
   cursor: not-allowed;
   background: #888;
   border-color: #888;
+  color: #fff;
 }
 
 .aov-btn-sm {
@@ -152,24 +174,45 @@
   font-size: 11px;
 }
 
-/* ── Textarea ────────────────────────────────────────────────────────────────── */
+/* ── Textareas & inputs ──────────────────────────────────────────────────────── */
 
-.aov-importer-json-input {
+.aov-importer-json-input,
+.aov-generate-prompt,
+.aov-export-textarea {
   width: 100%;
-  font-family: var(--font-mono, monospace);
-  font-size: 11px;
-  line-height: 1.45;
-  border: 1px solid var(--color-border-dark, #7a7971);
+  border: 1px solid var(--aov-border);
   border-radius: 3px;
   padding: 6px 8px;
   resize: vertical;
-  background: #fafaf8;
-  color: #191813;
+  background: var(--aov-bg-input);
+  color: var(--aov-text);
   box-sizing: border-box;
   flex-shrink: 0;
+  /* prevent browser dark-mode from overriding our colors */
+  color-scheme: light;
 }
 
-/* ── Status indicators ────────────────────────────────────────────────────────── */
+.aov-importer-json-input {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.aov-generate-prompt {
+  font-family: var(--font-primary, sans-serif);
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 8px 10px;
+}
+
+.aov-export-textarea {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  line-height: 1.45;
+  height: 280px;
+}
+
+/* ── Status indicators ───────────────────────────────────────────────────────── */
 
 .aov-importer-status {
   font-size: 12px;
@@ -178,22 +221,23 @@
   gap: 4px;
 }
 
-.aov-status-ok { color: #1a5c2a; }
-.aov-status-error { color: #8b1a1a; }
+.aov-status-ok    { color: var(--aov-green); }
+.aov-status-error { color: var(--aov-red-text); }
 
-/* ── Error list ───────────────────────────────────────────────────────────────── */
+/* ── Error list ──────────────────────────────────────────────────────────────── */
 
 .aov-importer-error-list {
   margin: 0;
   padding: 6px 10px;
-  background: #fff0f0;
-  border: 1px solid #e08080;
+  background: var(--aov-red-bg);
+  border: 1px solid var(--aov-red-border);
   border-radius: 3px;
   font-size: 11px;
-  color: #8b1a1a;
+  color: var(--aov-red-text);
   list-style: none;
   max-height: 80px;
   overflow-y: auto;
+  color-scheme: light;
 }
 
 .aov-importer-error-list li {
@@ -203,16 +247,18 @@
 /* ── Preview ─────────────────────────────────────────────────────────────────── */
 
 .aov-importer-preview {
-  border: 1px solid var(--color-border-dark, #7a7971);
+  border: 1px solid var(--aov-border);
   border-radius: 3px;
   padding: 4px 8px;
   font-size: 12px;
+  color: var(--aov-text);
 }
 
 .aov-importer-preview summary {
   cursor: pointer;
   font-weight: 600;
   padding: 2px 0;
+  color: var(--aov-text);
 }
 
 .aov-importer-preview-list {
@@ -225,26 +271,26 @@
 
 .aov-importer-preview-list li {
   padding: 2px 0;
-  border-bottom: 1px solid #e0ddd5;
+  border-bottom: 1px solid #d0ccc4;
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
 .aov-importer-meta {
-  color: var(--color-text-secondary, #6b6860);
+  color: var(--aov-text-dim);
   font-size: 11px;
 }
 
 .aov-importer-tag {
   font-size: 10px;
-  background: #4b0082;
+  background: var(--aov-purple);
   color: #fff;
   border-radius: 3px;
   padding: 1px 5px;
 }
 
-/* ── Overwrite checkbox ────────────────────────────────────────────────────────── */
+/* ── Overwrite checkbox ──────────────────────────────────────────────────────── */
 
 .aov-importer-check-label {
   display: flex;
@@ -252,25 +298,26 @@
   gap: 5px;
   font-size: 12px;
   cursor: pointer;
+  color: var(--aov-text);
 }
 
-/* ── Progress bar ───────────────────────────────────────────────────────────────── */
+/* ── Progress bar ────────────────────────────────────────────────────────────── */
 
 .aov-importer-progress-bar {
   height: 6px;
-  background: #e0ddd5;
+  background: #d0ccc4;
   border-radius: 3px;
   overflow: hidden;
 }
 
 .aov-importer-progress-fill {
   height: 100%;
-  background: #1a5c2a;
+  background: var(--aov-green);
   border-radius: 3px;
   transition: width 0.3s ease;
 }
 
-/* ── Log output ────────────────────────────────────────────────────────────────── */
+/* ── Log output ──────────────────────────────────────────────────────────────── */
 
 .aov-importer-log-output {
   flex: 1;
@@ -279,13 +326,14 @@
   line-height: 1.5;
   white-space: pre-wrap;
   word-break: break-all;
-  background: #1a1a1a;
+  background: var(--aov-bg-dark);
   color: #d4d0c8;
   border-radius: 3px;
   padding: 8px 10px;
   margin: 0;
   overflow-y: auto;
   min-height: 200px;
+  color-scheme: dark;
 }
 
 /* ── Settings panel ──────────────────────────────────────────────────────────── */
@@ -296,7 +344,7 @@
 
 .aov-importer-settings-hint {
   font-size: 12px;
-  color: var(--color-text-secondary, #6b6860);
+  color: var(--aov-text-dim);
   margin: 0;
 }
 
@@ -306,6 +354,7 @@
   grid-template-columns: max-content 1fr;
   gap: 4px 12px;
   font-size: 12px;
+  color: var(--aov-text);
 }
 
 .aov-importer-settings-list dt {
@@ -315,16 +364,16 @@
 
 .aov-importer-settings-list dd {
   margin: 0;
-  color: var(--color-text-secondary, #6b6860);
+  color: var(--aov-text-dim);
 }
 
-/* ── Items directory toolbar button ──────────────────────────────────────────── */
+/* ── Items directory toolbar button ─────────────────────────────────────────── */
 
 .aov-open-importer-btn {
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--color-text-secondary, #6b6860);
+  color: var(--aov-text-dim);
   font-size: 14px;
   padding: 0 4px;
   line-height: 1;
@@ -332,14 +381,15 @@
 }
 
 .aov-open-importer-btn:hover {
-  color: var(--dnd5e-color-gold, #4b0082);
+  color: var(--aov-purple);
 }
 
-/* ── Generate tab ─────────────────────────────────────────────────────────────── */
+/* ── Generate tab ────────────────────────────────────────────────────────────── */
 
 .aov-generate-label {
   font-size: 12px;
   font-weight: 600;
+  color: var(--aov-text);
   display: flex;
   align-items: baseline;
   gap: 8px;
@@ -348,22 +398,20 @@
 .aov-generate-model-hint {
   font-size: 11px;
   font-weight: 400;
-  color: var(--color-text-secondary, #6b6860);
+  color: var(--aov-text-dim);
 }
 
-.aov-generate-prompt {
-  width: 100%;
-  font-family: var(--font-primary, sans-serif);
-  font-size: 12px;
-  line-height: 1.5;
-  border: 1px solid var(--color-border-dark, #7a7971);
-  border-radius: 3px;
-  padding: 8px 10px;
-  resize: vertical;
-  background: #fafaf8;
-  color: #191813;
-  box-sizing: border-box;
-  flex-shrink: 0;
+.aov-generate-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--aov-text-dim);
+}
+
+.aov-generate-item-count {
+  font-weight: 600;
+  color: var(--aov-green);
 }
 
 .aov-generate-row {
@@ -373,9 +421,9 @@
 }
 
 .aov-btn-generate {
-  background: #4b0082;
+  background: var(--aov-purple);
   color: #fff;
-  border-color: #4b0082;
+  border-color: var(--aov-purple);
   font-size: 13px;
   padding: 7px 16px;
   white-space: nowrap;
@@ -385,70 +433,61 @@
   background: #3a0066;
 }
 
-.aov-generate-meta-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-}
-
-.aov-generate-item-count {
-  font-weight: 600;
-  color: #1a5c2a;
-  min-width: 0;
-}
-
 .aov-generate-count-label {
   display: flex;
   align-items: center;
   gap: 4px;
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-text-secondary, #6b6860);
+  color: var(--aov-text-dim);
   white-space: nowrap;
 }
 
 .aov-generate-count {
   width: 46px;
   padding: 5px 6px;
-  border: 1px solid var(--color-border-dark, #7a7971);
+  border: 1px solid var(--aov-border);
   border-radius: 3px;
-  background: #fafaf8;
+  background: var(--aov-bg-input);
+  color: var(--aov-text);
   font-size: 13px;
   text-align: center;
+  color-scheme: light;
 }
 
 .aov-generate-warning {
-  background: #fff8e6;
-  border: 1px solid #d4a017;
+  background: var(--aov-amber-bg);
+  border: 1px solid var(--aov-amber-border);
   border-radius: 3px;
   padding: 8px 10px;
   font-size: 12px;
-  color: #7a5800;
+  color: var(--aov-amber-text);
   display: flex;
   align-items: flex-start;
   gap: 6px;
+  color-scheme: light;
 }
 
 .aov-generate-error {
-  background: #fff0f0;
-  border: 1px solid #e08080;
+  background: var(--aov-red-bg);
+  border: 1px solid var(--aov-red-border);
   border-radius: 3px;
   padding: 8px 10px;
   font-size: 12px;
-  color: #8b1a1a;
+  color: var(--aov-red-text);
   display: flex;
   align-items: flex-start;
   gap: 6px;
+  color-scheme: light;
 }
 
-/* ── Sheet export button ──────────────────────────────────────────────────────── */
+/* ── Sheet export button ─────────────────────────────────────────────────────── */
 
 .aov-export-btn {
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--color-text-secondary, #6b6860);
+  color: var(--aov-text-dim);
   font-size: 13px;
   padding: 0 4px;
   line-height: 1;
@@ -456,10 +495,10 @@
 }
 
 .aov-export-btn:hover {
-  color: var(--dnd5e-color-gold, #4b0082);
+  color: var(--aov-purple);
 }
 
-/* ── Export dialog ────────────────────────────────────────────────────────────── */
+/* ── Export dialog ───────────────────────────────────────────────────────────── */
 
 .aov-export-dialog {
   display: flex;
@@ -474,31 +513,18 @@
 
 .aov-export-tab {
   padding: 4px 10px;
-  border: 1px solid var(--color-border-dark, #7a7971);
+  border: 1px solid var(--aov-border);
   border-radius: 3px;
-  background: none;
+  background: #e8e4da;
+  color: var(--aov-text);
   cursor: pointer;
   font-size: 12px;
 }
 
 .aov-export-tab.active {
-  background: var(--dnd5e-color-gold, #4b0082);
+  background: var(--aov-purple);
   color: #fff;
-  border-color: var(--dnd5e-color-gold, #4b0082);
-}
-
-.aov-export-textarea {
-  width: 100%;
-  height: 280px;
-  font-family: var(--font-mono, monospace);
-  font-size: 11px;
-  line-height: 1.45;
-  border: 1px solid var(--color-border-dark, #7a7971);
-  border-radius: 3px;
-  padding: 6px 8px;
-  resize: vertical;
-  background: #fafaf8;
-  box-sizing: border-box;
+  border-color: var(--aov-purple);
 }
 
 .aov-export-actions {
@@ -513,14 +539,15 @@
   align-items: center;
   gap: 4px;
   padding: 5px 10px;
-  border: 1px solid var(--color-border-dark, #7a7971);
+  border: 1px solid var(--aov-border);
   border-radius: 3px;
-  background: var(--color-bg-btn, #f0ece3);
+  background: #e8e4da;
+  color: var(--aov-text);
   font-size: 12px;
   cursor: pointer;
 }
 
 .aov-export-hint {
   font-size: 11px;
-  color: var(--color-text-secondary, #6b6860);
+  color: var(--aov-text-dim);
 }
